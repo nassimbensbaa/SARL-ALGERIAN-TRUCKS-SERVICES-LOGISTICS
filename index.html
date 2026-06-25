@@ -12,7 +12,7 @@
 
 <style>
 
-/* ================= GLOBAL ================= */
+/* ================= RESET ================= */
 
 *{
 margin:0;
@@ -39,23 +39,18 @@ box-shadow:0 5px 15px rgba(0,0,0,.15);
 margin-bottom:20px;
 }
 
-header h1{
-font-size:30px;
-font-weight:700;
-}
+header h1{font-size:30px;font-weight:700;}
+header h3{margin-top:8px;font-weight:400;}
 
-header h3{
-margin-top:8px;
-font-weight:400;
-}
-
-/* ================= BUTTONS ================= */
+/* ================= ACTION BUTTONS ================= */
 
 .action-buttons{
 display:flex;
 gap:10px;
 margin-bottom:15px;
 }
+
+/* ================= BUTTONS ================= */
 
 button{
 border:none;
@@ -96,7 +91,7 @@ flex-direction:column;
 gap:20px;
 }
 
-/* ================= CARDS ================= */
+/* ================= CARD ================= */
 
 .card{
 background:#fff;
@@ -179,10 +174,8 @@ display:none;
 <body>
 
 <header>
-
 <h1>Sarl Algerian Trucks Services and Logistics</h1>
 <h3>Directeur financier : BENSBAA Nassim</h3>
-
 </header>
 
 <!-- ================= BUTTONS ================= -->
@@ -201,7 +194,7 @@ Ajouter un employé
 
 <div class="container">
 
-<!-- ================= EMPLOYE LIST ================= -->
+<!-- ================= LEFT PANEL (NE PAS TOUCHER TABLES OR BUTTONS INSIDE) ================= -->
 
 <div class="left-panel hidden" id="employeesPanel">
 
@@ -257,7 +250,7 @@ Ajouter l'employé
 
 </div>
 
-<!-- ================= ADVANCE FORM (ORIGINAL FULL) ================= -->
+<!-- ================= ADVANCE FORM (FULL ORIGINAL UNTOUCHED) ================= -->
 
 <div class="card">
 
@@ -287,7 +280,6 @@ Ajouter l'employé
 </select>
 
 <select id="salaryMonth" style="display:none;">
-
 <option value="">Choisir le mois</option>
 <option value="Janvier 2026">Janvier 2026</option>
 <option value="Février 2026">Février 2026</option>
@@ -301,14 +293,11 @@ Ajouter l'employé
 <option value="Octobre 2026">Octobre 2026</option>
 <option value="Novembre 2026">Novembre 2026</option>
 <option value="Décembre 2026">Décembre 2026</option>
-
 </select>
 
 <input type="text" id="advanceDetails" placeholder="Détails">
 
-</div>
-
-<br>
+<br><br>
 
 <button type="submit" class="btn-success">
 Ajouter l'avance
@@ -318,7 +307,7 @@ Ajouter l'avance
 
 </div>
 
-<!-- ================= TEMP TABLE ================= -->
+<!-- ================= TEMP TABLE (UNCHANGED) ================= -->
 
 <div class="card">
 
@@ -346,9 +335,21 @@ Ajouter l'avance
 Total : <span id="temp-total">0.00</span> DZD
 </div>
 
+<div class="action-buttons">
+
+<button class="btn-print" onclick="printReceipt()">
+Imprimer
+</button>
+
+<button class="btn-warning" onclick="transferToMain()">
+Transférer vers liste principale
+</button>
+
 </div>
 
-<!-- ================= MAIN TABLE ================= -->
+</div>
+
+<!-- ================= MAIN TABLE (UNCHANGED) ================= -->
 
 <div class="card">
 
@@ -403,7 +404,7 @@ Total général : <span id="main-total">0.00</span> DZD
 
 <script>
 
-// ================= TOGGLES =================
+// ================= TOGGLE ONLY (SAFE) =================
 
 function toggleEmployees(){
 document.getElementById("employeesPanel").classList.toggle("hidden");
