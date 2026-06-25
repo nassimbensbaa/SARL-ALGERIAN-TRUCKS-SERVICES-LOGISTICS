@@ -1,4 +1,4 @@
-javascript
+
 const API_URL = "/api/employees";
 const DELETE_PASSWORD = "1234";
 
