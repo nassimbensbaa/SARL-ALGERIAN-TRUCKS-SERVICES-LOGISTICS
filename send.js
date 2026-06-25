@@ -1,5 +1,5 @@
 javascript
-const API_URL = "/api/employees.js";
+const API_URL = "/api/employees";
 const DELETE_PASSWORD = "1234";
 
 // =========================
