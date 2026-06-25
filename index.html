@@ -32,6 +32,9 @@
     .btn-print:hover{background:#565e64}
     .btn-edit{background:#17a2b8;color:#fff}
     .btn-edit:hover{background:#138496}
+    .btn-sync{background:#28a745;color:#fff}
+    .btn-sync:hover{background:#218838}
+    .loading{background:rgba(255,255,255,0.8);padding:10px;border-radius:8px;text-align:center;color:#0066cc;font-weight:500;display:none}
     table{width:100%;border-collapse:collapse;margin-top:6px}
     th{background:#007bff;color:#fff;padding:6px 4px;font-size:12px;text-align:center}
     td{padding:6px 4px;border:1px solid #ddd;font-size:12px;text-align:center}
@@ -40,6 +43,8 @@
     .action-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     .action-icons{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
     .action-icons button{padding:3px 7px;font-size:13px;border-radius:4px;min-width:32px}
+    .sync-bar{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+    .sync-bar button{display:flex;align-items:center;gap:6px}
     #print-area{display:none}
     @media(max-width:768px){.container{flex-direction:column}.left-panel{width:100%;position:relative;top:auto}}
     @media print{body{background:#fff}header,button{display:none}.card{box-shadow:none;border:none}#print-area{display:block}}
@@ -54,6 +59,10 @@
   <div class="left-panel">
     <div class="card">
       <h2>Liste des employés</h2>
+      <div class="sync-bar">
+        <button class="btn-sync" onclick="syncFromSheet()" style="font-size:12px;padding:5px 10px;">🔄 Synchroniser</button>
+        <span style="font-size:11px;color:#666;" id="syncStatus">Dernière synchro: jamais</span>
+      </div>
       <table id="employees-table">
         <thead><tr><th>N°</th><th>Nom</th><th>Poste</th><th>Actions</th></tr></thead>
         <tbody></tbody>
@@ -137,13 +146,109 @@
   </div>
 </div>
 <div id="print-area"></div>
+
 <script>
+  // ====== Configuration Google Sheets ======
+  // IMPORTANT: Remplacez ces valeurs par les vôtres
+  const GOOGLE_SHEETS_CONFIG = {
+    // Pour utiliser l'API Google Sheets v4
+    apiKey: 'VOTRE_API_KEY', // Créée dans Google Cloud Console
+    sheetId: 'VOTRE_SHEET_ID', // L'ID de votre Google Sheet (dans l'URL)
+    range: 'Employés!A2:C', // Plage de données (feuille "Employés" colonnes A à C)
+    // Alternative: Utiliser un script Google Apps Script déployé comme web app
+    // webAppUrl: 'https://script.google.com/macros/s/VOTRE_SCRIPT_ID/exec'
+  };
+
   // ====== Données ======
   let employees = [];
   let tempAdvances = [];
   let mainAdvances = [];
   let rowCounter = 0;
   let editIndex = null;
+  let lastSync = null;
+
+  // ====== Synchronisation avec Google Sheets ======
+  async function syncFromSheet() {
+    const statusEl = document.getElementById('syncStatus');
+    statusEl.textContent = '🔄 Synchronisation en cours...';
+    statusEl.style.color = '#fd7e14';
+
+    try {
+      // Méthode 1: Utiliser l'API Google Sheets (nécessite une clé API)
+      // Décommentez cette partie si vous utilisez l'API directement
+      /*
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${GOOGLE_SHEETS_CONFIG.sheetId}/values/${GOOGLE_SHEETS_CONFIG.range}?key=${GOOGLE_SHEETS_CONFIG.apiKey}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      if (data.values && data.values.length > 0) {
+        employees = data.values.map(row => ({
+          num: row[0] || '',
+          name: row[1] || '',
+          position: row[2] || ''
+        }));
+        renderEmployees();
+        populateEmployeeSelects();
+        lastSync = new Date();
+        statusEl.textContent = `✅ Synchronisé à ${lastSync.toLocaleTimeString()}`;
+        statusEl.style.color = '#28a745';
+      }
+      */
+
+      // Méthode 2: Utiliser un Web App (recommandé pour la sécurité)
+      // Décommentez si vous avez déployé un script Google Apps Script
+      /*
+      const response = await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl);
+      const data = await response.json();
+      
+      if (data.data && data.data.length > 0) {
+        employees = data.data.map(row => ({
+          num: row[0] || '',
+          name: row[1] || '',
+          position: row[2] || ''
+        }));
+        renderEmployees();
+        populateEmployeeSelects();
+        lastSync = new Date();
+        statusEl.textContent = `✅ Synchronisé à ${lastSync.toLocaleTimeString()}`;
+        statusEl.style.color = '#28a745';
+      }
+      */
+
+      // ====== DONNÉES DE TEST (à remplacer par votre vraie API) ======
+      // Simule une réponse de Google Sheets pour démonstration
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simule un délai réseau
+      
+      // Données simulées (remplacez par vos vraies données)
+      const testData = [
+        ['001', 'Ahmed Benali', 'Chauffeur'],
+        ['002', 'Karim Mansouri', 'Mécanicien'],
+        ['003', 'Lydia Hakim', 'Comptable'],
+        ['004', 'Sofiane Amir', 'Logisticien'],
+        ['005', 'Nadia Khelil', 'RH']
+      ];
+      
+      employees = testData.map(row => ({
+        num: row[0] || '',
+        name: row[1] || '',
+        position: row[2] || ''
+      }));
+      
+      renderEmployees();
+      populateEmployeeSelects();
+      lastSync = new Date();
+      statusEl.textContent = `✅ Synchronisé à ${lastSync.toLocaleTimeString()}`;
+      statusEl.style.color = '#28a745';
+
+      alert(`✅ Synchronisation réussie! ${employees.length} employés chargés.`);
+      
+    } catch (error) {
+      console.error('Erreur de synchronisation:', error);
+      statusEl.textContent = '❌ Erreur de synchronisation';
+      statusEl.style.color = '#dc3545';
+      alert('❌ Erreur lors de la synchronisation. Vérifiez la console pour plus de détails.');
+    }
+  }
 
   // ====== Fonctions employés ======
   async function addEmployee(num, name, position) {
@@ -155,6 +260,8 @@
     }
     renderEmployees();
     populateEmployeeSelects();
+    // Optionnel: Sauvegarder automatiquement dans Google Sheets
+    // await saveToSheet();
   }
 
   function deleteEmployee(index) {
@@ -192,7 +299,6 @@
       `;
       tbody.appendChild(tr);
     });
-    // Réinitialiser le bouton si aucun edit en cours
     if (editIndex === null) {
       document.querySelector('#employee-form .btn-primary').textContent = 'Ajouter l\'employé';
     }
@@ -323,8 +429,18 @@
     win.print();
   }
 
+  // ====== Sauvegarde vers Google Sheets (optionnel) ======
+  async function saveToSheet() {
+    // À implémenter si vous voulez sauvegarder automatiquement
+    // Utilisez un web app ou l'API pour envoyer les données
+    console.log('Sauvegarde vers Google Sheets:', employees);
+  }
+
   // ====== Événements ======
   document.addEventListener('DOMContentLoaded', () => {
+    // Chargement automatique au démarrage
+    syncFromSheet();
+
     // Ajout/Modification employé
     document.getElementById('employee-form').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -370,15 +486,6 @@
 
     // Date par défaut
     document.getElementById('advanceDate').value = new Date().toISOString().split('T')[0];
-
-    // Données initiales
-    addEmployee('001', 'Ahmed Benali', 'Chauffeur');
-    addEmployee('002', 'Karim Mansouri', 'Mécanicien');
-    populateEmployeeSelects();
-    renderEmployees();
-    renderTemp();
-    renderMain();
-    updateFilters();
   });
 </script>
 </body>
