@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gestion des Avances ATSL</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>
+Gestion des Avances ATSL
+</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
 
 <style>
 
@@ -24,7 +31,11 @@ padding:20px;
 }
 
 header{
-background:linear-gradient(135deg,#0066cc,#0099ff);
+background:linear-gradient(
+135deg,
+#0066cc,
+#0099ff
+);
 color:#fff;
 padding:25px;
 border-radius:12px;
@@ -81,7 +92,11 @@ font-size:22px;
 
 .form-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(220px,1fr)
+);
 gap:12px;
 }
 
@@ -177,14 +192,6 @@ tbody tr:nth-child(even){
 background:#f8fbff;
 }
 
-.search-box{
-margin-bottom:15px;
-}
-
-.search-box input{
-width:100%;
-}
-
 .total-box{
 margin-top:15px;
 font-size:18px;
@@ -224,8 +231,7 @@ background:white;
 }
 
 header,
-button,
-.search-box{
+button{
 display:none;
 }
 
@@ -241,35 +247,52 @@ display:block;
 }
 
 </style>
-</head>
 
-<body>
+</head>
+  <body>
 
 <header>
-<h1>Sarl Algerian Trucks Services and Logistics</h1>
-<h3>Directeur financier : BENSBAA Nassim</h3>
+
+<h1>
+Sarl Algerian Trucks Services and Logistics
+</h1>
+
+<h3>
+Directeur financier :
+BENSBAA Nassim
+</h3>
+
 </header>
 
 <div class="container">
 
-<!-- EMPLOYEES -->
+<!-- LEFT PANEL -->
+
 <div class="left-panel">
 
 <div class="card">
 
-<h2>Liste des employés</h2>
+<h2>
+Liste des employés
+</h2>
 
 <table id="employees-table">
 
 <thead>
+
 <tr>
+
 <th>N°</th>
 <th>Nom</th>
 <th>Poste</th>
+<th>Actions</th>
+
 </tr>
+
 </thead>
 
 <tbody>
+
 </tbody>
 
 </table>
@@ -278,14 +301,17 @@ display:block;
 
 </div>
 
-<!-- RIGHT SIDE -->
+<!-- RIGHT PANEL -->
+
 <div class="right-panel">
 
-<!-- ADD EMPLOYEE -->
+<!-- AJOUT EMPLOYE -->
 
 <div class="card">
 
-<h2>Ajouter un employé</h2>
+<h2>
+Ajouter un employé
+</h2>
 
 <form id="employee-form">
 
@@ -325,11 +351,13 @@ Ajouter l'employé
 
 </div>
 
-<!-- ADD ADVANCE -->
+<!-- AJOUT AVANCE -->
 
 <div class="card">
 
-<h2>Ajouter une avance</h2>
+<h2>
+Ajouter une avance
+</h2>
 
 <form id="advance-form">
 
@@ -386,6 +414,64 @@ Prime mission
 
 </select>
 
+<select
+id="salaryMonth"
+style="display:none;">
+
+<option value="">
+Choisir le mois
+</option>
+
+<option value="Janvier 2026">
+Janvier 2026
+</option>
+
+<option value="Février 2026">
+Février 2026
+</option>
+
+<option value="Mars 2026">
+Mars 2026
+</option>
+
+<option value="Avril 2026">
+Avril 2026
+</option>
+
+<option value="Mai 2026">
+Mai 2026
+</option>
+
+<option value="Juin 2026">
+Juin 2026
+</option>
+
+<option value="Juillet 2026">
+Juillet 2026
+</option>
+
+<option value="Août 2026">
+Août 2026
+</option>
+
+<option value="Septembre 2026">
+Septembre 2026
+</option>
+
+<option value="Octobre 2026">
+Octobre 2026
+</option>
+
+<option value="Novembre 2026">
+Novembre 2026
+</option>
+
+<option value="Décembre 2026">
+Décembre 2026
+</option>
+
+</select>
+
 <input
 type="text"
 id="advanceDetails"
@@ -406,12 +492,13 @@ Ajouter l'avance
 </form>
 
 </div>
-
-<!-- TEMP ADVANCES -->
+<!-- TEMPORAIRE -->
 
 <div class="card">
 
-<h2>Liste Temporaire</h2>
+<h2>
+Liste Temporaire
+</h2>
 
 <table id="temp-table">
 
@@ -440,25 +527,21 @@ Ajouter l'avance
 <div class="total-box">
 
 Total :
-<span id="temp-total">
-0.00
-</span>
+<span id="temp-total">0.00</span>
 DZD
 
 </div>
 
 <div class="action-buttons">
 
-<button
-class="btn-print"
+<button class="btn-print"
 onclick="printReceipt()">
 
 Imprimer
 
 </button>
 
-<button
-class="btn-warning"
+<button class="btn-warning"
 onclick="transferToMain()">
 
 Transférer vers liste principale
@@ -473,14 +556,47 @@ Transférer vers liste principale
 
 <div class="card">
 
-<h2>Liste des avances</h2>
+<h2>
+Liste des avances
+</h2>
 
-<div class="search-box">
+<div class="form-grid">
 
-<input
-type="text"
-id="search-main"
-placeholder="Recherche par nom ou détails">
+<select id="employeeFilter">
+
+<option value="">
+Tous les employés
+</option>
+
+</select>
+
+<select id="typeFilter">
+
+<option value="">
+Tous les types
+</option>
+
+<option value="T.Salaire">
+T.Salaire
+</option>
+
+<option value="Réparation véhicule">
+Réparation véhicule
+</option>
+
+<option value="Prêt">
+Prêt
+</option>
+
+<option value="Prime alimentation">
+Prime alimentation
+</option>
+
+<option value="Prime mission">
+Prime mission
+</option>
+
+</select>
 
 </div>
 
@@ -509,9 +625,7 @@ placeholder="Recherche par nom ou détails">
 <div class="total-box">
 
 Total général :
-<span id="main-total">
-0.00
-</span>
+<span id="main-total">0.00</span>
 DZD
 
 </div>
@@ -523,313 +637,178 @@ DZD
 </div>
 
 <div id="print-area"></div>
-```html
 <script src="send.js"></script>
 
 <script>
 
 // =========================
-// AJOUT EMPLOYÉ
+// EMPLOYEE FORM
 // =========================
 
 document
 .getElementById("employee-form")
-.addEventListener(
-"submit",
-async function(e){
+.addEventListener("submit", async function(e){
 
-e.preventDefault();
+  e.preventDefault();
 
-await addEmployee(
+  await addEmployee(
+    document.getElementById("employeeNumber").value,
+    document.getElementById("employeeName").value,
+    document.getElementById("employeePosition").value
+  );
 
-document.getElementById(
-"employeeNumber"
-).value,
+  this.reset();
 
-document.getElementById(
-"employeeName"
-).value,
-
-document.getElementById(
-"employeePosition"
-).value
-
-);
-
-this.reset();
-
-}
-);
+});
 
 // =========================
-// AJOUT AVANCE
+// ADVANCE FORM
 // =========================
 
 document
 .getElementById("advance-form")
-.addEventListener(
-"submit",
-async function(e){
+.addEventListener("submit", async function(e){
 
-e.preventDefault();
+  e.preventDefault();
 
-await addTempAdvance(
+  const type =
+    document.getElementById("advanceType").value;
 
-document.getElementById(
-"advanceDate"
-).value,
+  let details =
+    document.getElementById("advanceDetails").value;
 
-document.getElementById(
-"advanceEmployee"
-).value,
+  if(type === "T.Salaire"){
 
-document.getElementById(
-"advanceAmount"
-).value,
+    const salaryMonth =
+      document.getElementById("salaryMonth");
 
-document.getElementById(
-"advanceType"
-).value,
+    details = salaryMonth.value;
 
-document.getElementById(
-"advanceDetails"
-).value
+  }
 
-);
+  await addTempAdvance(
+    document.getElementById("advanceDate").value,
+    document.getElementById("advanceEmployee").value,
+    document.getElementById("advanceAmount").value,
+    type,
+    details
+  );
 
-this.reset();
+  this.reset();
 
-}
-);
-
-// =========================
-// RECHERCHE
-// =========================
-
-document
-.getElementById("search-main")
-.addEventListener(
-"keyup",
-searchMain
-);
-
-// =========================
-// TOTAL PRINCIPAL
-// =========================
-
-function updateMainTotal(){
-
-let total = 0;
-
-mainAdvances.forEach(item => {
-
-total += Number(
-item.amount || 0
-);
+  document.getElementById("salaryMonth").style.display = "none";
 
 });
 
-const el =
-document.getElementById(
-"main-total"
-);
-
-if(el){
-
-el.textContent =
-total.toLocaleString(
-"fr-FR",
-{
-minimumFractionDigits:2
-}
-);
-
-}
-
-}
-
 // =========================
-// SURCHARGE TABLEAU
-// =========================
-
-const oldRenderMain =
-renderMainTable;
-
-renderMainTable =
-function(){
-
-oldRenderMain();
-
-updateMainTotal();
-
-};
-
-// =========================
-// IMPRESSION
+// PRINT RECEIPT
 // =========================
 
 function printReceipt(){
 
-const selected =
-document.querySelectorAll(
-".temp-check:checked"
-);
+  const selected =
+    document.querySelectorAll(".temp-check:checked");
 
-if(
-selected.length === 0
-){
+  if(selected.length === 0){
+    alert("Sélectionnez au moins une ligne");
+    return;
+  }
 
-alert(
-"Sélectionnez au moins une ligne"
-);
+  let html = `
+  <div style="font-family:Arial;padding:20px;">
+  <h2 style="text-align:center;">
+  Sarl Algerian Trucks Services and Logistics
+  </h2>
+  <h3 style="text-align:center;">
+  Directeur financier : BENSBAA Nassim
+  </h3>
+  <hr>
+  <h2 style="text-align:center;">
+  REÇU DE CAISSE
+  </h2>
+  <table border="1" width="100%" style="border-collapse:collapse;">
+  <tr>
+  <th>Date</th>
+  <th>Employé</th>
+  <th>Montant</th>
+  <th>Type</th>
+  <th>Détails</th>
+  </tr>
+  `;
 
-return;
+  let total = 0;
+
+  selected.forEach(c => {
+
+    const row = Number(c.dataset.row);
+
+    const item = tempAdvances.find(x => x.row === row);
+
+    if(!item) return;
+
+    total += Number(item.amount || 0);
+
+    html += `
+    <tr>
+      <td>${item.date}</td>
+      <td>${item.name}</td>
+      <td>${item.amount}</td>
+      <td>${item.type}</td>
+      <td>${item.details}</td>
+    </tr>
+    `;
+
+  });
+
+  html += `
+  </table>
+  <h2 style="margin-top:20px;text-align:center;">
+  TOTAL : ${total.toFixed(2)} DZD
+  </h2>
+  </div>
+  `;
+
+  const win = window.open("", "_blank");
+  win.document.write(html);
+  win.document.close();
+  win.print();
 
 }
 
-let html = `
+// =========================
+// INIT
+// =========================
 
-<div style="
-font-family:Arial;
-padding:20px;
-">
+document.addEventListener("DOMContentLoaded", () => {
 
-<h1 style="
-text-align:center;
-">
-Sarl Algerian Trucks Services and Logistics
-</h1>
+  loadAll();
 
-<h3 style="
-text-align:center;
-">
-Directeur financier :
-BENSBAA Nassim
-</h3>
+  // date automatique
+  const dateInput = document.getElementById("advanceDate");
 
-<hr>
+  if(dateInput){
+    dateInput.value = new Date().toISOString().split("T")[0];
+  }
 
-<h2 style="
-text-align:center;
-">
-REÇU DE CAISSE
-</h2>
+  // type change -> salary months
+  const typeSelect = document.getElementById("advanceType");
+  const salaryMonth = document.getElementById("salaryMonth");
 
-<table
-border="1"
-width="100%"
-style="
-border-collapse:collapse;
-">
+  if(typeSelect && salaryMonth){
 
-<tr>
+    typeSelect.addEventListener("change", function(){
 
-<th>Date</th>
-<th>Employé</th>
-<th>Montant</th>
-<th>Type</th>
-<th>Détails</th>
+      if(this.value === "T.Salaire"){
+        salaryMonth.style.display = "block";
+      } else {
+        salaryMonth.style.display = "none";
+      }
 
-</tr>
+    });
 
-`;
-
-let total = 0;
-
-selected.forEach(c=>{
-
-const row =
-Number(
-c.dataset.row
-);
-
-const item =
-tempAdvances.find(
-x => x.row === row
-);
-
-if(!item) return;
-
-total +=
-Number(
-item.amount || 0
-);
-
-html += `
-
-<tr>
-
-<td>${item.date}</td>
-<td>${item.name}</td>
-<td>${item.amount}</td>
-<td>${item.type}</td>
-<td>${item.details}</td>
-
-</tr>
-
-`;
+  }
 
 });
-
-html += `
-
-</table>
-
-<h2 style="
-margin-top:20px;
-">
-
-TOTAL :
-${total.toLocaleString(
-"fr-FR",
-{
-minimumFractionDigits:2
-}
-)} DZD
-
-</h2>
-
-</div>
-
-`;
-
-const printArea =
-document.getElementById(
-"print-area"
-);
-
-printArea.innerHTML =
-html;
-
-const win =
-window.open(
-"",
-"_blank"
-);
-
-win.document.write(
-html
-);
-
-win.document.close();
-
-win.print();
-
-}
-
-// =========================
-// AUTO LOAD
-// =========================
-
-document.addEventListener(
-"DOMContentLoaded",
-() => {
-
-loadAll();
-
-}
-);
-
 </script>
 
 </body>
