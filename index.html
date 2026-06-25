@@ -12,7 +12,7 @@
 
 <style>
 
-/* ================= GLOBAL ================= */
+/* ================= RESET ================= */
 
 *{
 margin:0;
@@ -59,11 +59,11 @@ font-weight:600;
 transition:.3s;
 }
 
-.btn-primary{background:#007bff;color:#fff;}
-.btn-success{background:#198754;color:#fff;}
-.btn-warning{background:#fd7e14;color:#fff;}
-.btn-danger{background:#dc3545;color:#fff;}
-.btn-print{background:#6c757d;color:#fff;}
+.btn-primary{background:#007bff;color:white;}
+.btn-success{background:#198754;color:white;}
+.btn-warning{background:#fd7e14;color:white;}
+.btn-danger{background:#dc3545;color:white;}
+.btn-print{background:#6c757d;color:white;}
 
 /* ================= LAYOUT ================= */
 
@@ -136,7 +136,7 @@ margin-top:10px;
 
 th{
 background:#007bff;
-color:#fff;
+color:white;
 padding:10px;
 font-size:14px;
 }
@@ -205,12 +205,6 @@ border-radius:6px;
 cursor:pointer;
 }
 
-/* ================= PRINT ================= */
-
-#print-area{
-display:none;
-}
-
 </style>
 
 </head>
@@ -238,11 +232,10 @@ Ajouter un employé
 
 <div class="container">
 
-<!-- ================= RIGHT PANEL ================= -->
-
 <div class="right-panel">
 
-<!-- ADVANCE FORM (UNCHANGED) -->
+<!-- ================= ADVANCE FORM ================= -->
+
 <div class="card">
 
 <h2>Ajouter une avance</h2>
@@ -295,7 +288,8 @@ Ajouter un employé
 
 </div>
 
-<!-- TEMP TABLE -->
+<!-- ================= TEMP TABLE ================= -->
+
 <div class="card">
 
 <h2>Liste Temporaire</h2>
@@ -331,7 +325,8 @@ Total : <span id="temp-total">0.00</span> DZD
 
 </div>
 
-<!-- MAIN TABLE -->
+<!-- ================= MAIN TABLE ================= -->
+
 <div class="card">
 
 <h2>Liste des avances</h2>
@@ -407,9 +402,9 @@ Total général : <span id="main-total">0.00</span> DZD
 
 <div class="form-grid">
 
-<input type="text" id="employeeNumber" required placeholder="N°">
-<input type="text" id="employeeName" required placeholder="Nom">
-<input type="text" id="employeePosition" required placeholder="Poste">
+<input type="text" id="employeeNumber" required>
+<input type="text" id="employeeName" required>
+<input type="text" id="employeePosition" required>
 
 </div>
 
@@ -429,7 +424,7 @@ Total général : <span id="main-total">0.00</span> DZD
 
 <script>
 
-// ================= MODALS =================
+/* ================= MODALS ================= */
 
 function openModal(id){
 document.getElementById(id).style.display = "flex";
@@ -439,7 +434,73 @@ function closeModal(id){
 document.getElementById(id).style.display = "none";
 }
 
-// ================= EMPLOYEE FORM =================
+/* ================= FIX PRINT ================= */
+
+function printReceipt(){
+
+  const rows = document.querySelectorAll("#temp-table tbody tr");
+
+  if(rows.length === 0){
+    alert("Aucune donnée à imprimer");
+    return;
+  }
+
+  let total = 0;
+
+  let html = `
+  <div style="font-family:Arial;padding:20px;">
+  <h2 style="text-align:center;">Sarl Algerian Trucks Services and Logistics</h2>
+  <h3 style="text-align:center;">REÇU DE CAISSE</h3>
+  <hr>
+  <table border="1" width="100%" style="border-collapse:collapse;">
+  <tr>
+    <th>Date</th>
+    <th>Employé</th>
+    <th>Montant</th>
+    <th>Type</th>
+    <th>Détails</th>
+  </tr>
+  `;
+
+  rows.forEach(row => {
+
+    const cells = row.querySelectorAll("td");
+
+    const date = cells[1].innerText;
+    const emp = cells[2].innerText;
+    const montant = parseFloat(cells[3].innerText) || 0;
+    const type = cells[4].innerText;
+    const details = cells[5].innerText;
+
+    total += montant;
+
+    html += `
+      <tr>
+        <td>${date}</td>
+        <td>${emp}</td>
+        <td>${montant}</td>
+        <td>${type}</td>
+        <td>${details}</td>
+      </tr>
+    `;
+  });
+
+  html += `
+  </table>
+
+  <h2 style="text-align:center;margin-top:20px;">
+  TOTAL : ${total.toFixed(2)} DZD
+  </h2>
+  </div>
+  `;
+
+  const win = window.open("", "_blank");
+  win.document.write(html);
+  win.document.close();
+  win.print();
+}
+
+/* ================= EMPLOYEE FORM ================= */
 
 document.getElementById("employee-form").addEventListener("submit", async function(e){
 
