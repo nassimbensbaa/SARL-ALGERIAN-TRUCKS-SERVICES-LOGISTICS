@@ -4,9 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>
 Gestion des Avances ATSL
@@ -16,6 +14,8 @@ Gestion des Avances ATSL
 rel="stylesheet">
 
 <style>
+
+/* ================= RESET ================= */
 
 *{
 margin:0;
@@ -29,6 +29,8 @@ background:#eaf4ff;
 color:#333;
 padding:20px;
 }
+
+/* ================= HEADER ================= */
 
 header{
 background:linear-gradient(
@@ -54,65 +56,13 @@ margin-top:8px;
 font-weight:400;
 }
 
-.container{
+/* ================= BUTTONS ================= */
+
+.top-buttons{
 display:flex;
-gap:20px;
-align-items:flex-start;
-}
-
-.left-panel{
-width:320px;
-background:#fff;
-border-radius:12px;
-padding:15px;
-box-shadow:0 4px 15px rgba(0,0,0,.08);
-position:sticky;
-top:20px;
-}
-
-.right-panel{
-flex:1;
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-.card{
-background:#fff;
-border-radius:12px;
-padding:20px;
-box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
-
-.card h2{
-color:#0066cc;
-margin-bottom:15px;
-font-size:22px;
-}
-
-.form-grid{
-display:grid;
-grid-template-columns:
-repeat(
-auto-fit,
-minmax(220px,1fr)
-);
-gap:12px;
-}
-
-input,
-select{
-width:100%;
-padding:10px;
-border:1px solid #d0d0d0;
-border-radius:8px;
-font-size:14px;
-outline:none;
-}
-
-input:focus,
-select:focus{
-border-color:#0099ff;
+gap:10px;
+margin-bottom:20px;
+flex-wrap:wrap;
 }
 
 button{
@@ -169,6 +119,62 @@ color:white;
 background:#565e64;
 }
 
+/* ================= LAYOUT ================= */
+
+.container{
+display:flex;
+gap:20px;
+align-items:flex-start;
+}
+
+.right-panel{
+flex:1;
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+/* ================= CARD ================= */
+
+.card{
+background:#fff;
+border-radius:12px;
+padding:20px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.card h2{
+color:#0066cc;
+margin-bottom:15px;
+font-size:22px;
+}
+
+/* ================= FORM ================= */
+
+.form-grid{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+gap:12px;
+}
+
+input,
+select{
+width:100%;
+padding:10px;
+border:1px solid #d0d0d0;
+border-radius:8px;
+font-size:14px;
+outline:none;
+}
+
+input:focus,
+select:focus{
+border-color:#0099ff;
+}
+
+/* ================= TABLE ================= */
+
 table{
 width:100%;
 border-collapse:collapse;
@@ -192,6 +198,8 @@ tbody tr:nth-child(even){
 background:#f8fbff;
 }
 
+/* ================= TOTAL ================= */
+
 .total-box{
 margin-top:15px;
 font-size:18px;
@@ -206,6 +214,62 @@ flex-wrap:wrap;
 margin-top:15px;
 }
 
+/* ================= MODAL ================= */
+
+.modal-overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.modal{
+background:#fff;
+width:95%;
+max-width:1000px;
+border-radius:12px;
+padding:20px;
+max-height:90vh;
+overflow:auto;
+animation:popup .2s ease;
+}
+
+@keyframes popup{
+
+from{
+opacity:0;
+transform:scale(.9);
+}
+
+to{
+opacity:1;
+transform:scale(1);
+}
+
+}
+
+.modal-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.close-btn{
+background:#dc3545;
+color:#fff;
+padding:6px 12px;
+border-radius:6px;
+}
+
+/* ================= PRINT ================= */
+
 #print-area{
 display:none;
 }
@@ -216,32 +280,17 @@ display:none;
 flex-direction:column;
 }
 
-.left-panel{
-width:100%;
-position:relative;
-top:auto;
-}
-
 }
 
 @media print{
-
-body{
-background:white;
-}
 
 header,
 button{
 display:none;
 }
 
-.card{
-box-shadow:none;
-border:none;
-}
-
-#print-area{
-display:block;
+body{
+background:white;
 }
 
 }
@@ -249,7 +298,8 @@ display:block;
 </style>
 
 </head>
-  <body>
+
+<body>
 
 <header>
 
@@ -264,94 +314,30 @@ BENSBAA Nassim
 
 </header>
 
-<div class="container">
-
-<!-- LEFT PANEL -->
-
-<div class="left-panel">
-
-<div class="card">
-
-<h2>
-Liste des employés
-</h2>
-
-<table id="employees-table">
-
-<thead>
-
-<tr>
-
-<th>N°</th>
-<th>Nom</th>
-<th>Poste</th>
-<th>Actions</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-<!-- RIGHT PANEL -->
-
-<div class="right-panel">
-
-<!-- AJOUT EMPLOYE -->
-
-<div class="card">
-
-<h2>
-Ajouter un employé
-</h2>
-
-<form id="employee-form">
-
-<div class="form-grid">
-
-<input
-type="text"
-id="employeeNumber"
-placeholder="N°"
-required>
-
-<input
-type="text"
-id="employeeName"
-placeholder="Nom et prénom"
-required>
-
-<input
-type="text"
-id="employeePosition"
-placeholder="Poste"
-required>
-
-</div>
-
-<br>
+<div class="top-buttons">
 
 <button
-type="submit"
-class="btn-primary">
+class="btn-primary"
+onclick="openModal('employeesModal')">
 
-Ajouter l'employé
+👥 Liste des employés
 
 </button>
 
-</form>
+<button
+class="btn-success"
+onclick="openModal('addEmployeeModal')">
+
+➕ Ajouter un employé
+
+</button>
 
 </div>
+<div class="container">
 
-<!-- AJOUT AVANCE -->
+<div class="right-panel">
+
+<!-- ================= AJOUT AVANCE ================= -->
 
 <div class="card">
 
@@ -422,53 +408,18 @@ style="display:none;">
 Choisir le mois
 </option>
 
-<option value="Janvier 2026">
-Janvier 2026
-</option>
-
-<option value="Février 2026">
-Février 2026
-</option>
-
-<option value="Mars 2026">
-Mars 2026
-</option>
-
-<option value="Avril 2026">
-Avril 2026
-</option>
-
-<option value="Mai 2026">
-Mai 2026
-</option>
-
-<option value="Juin 2026">
-Juin 2026
-</option>
-
-<option value="Juillet 2026">
-Juillet 2026
-</option>
-
-<option value="Août 2026">
-Août 2026
-</option>
-
-<option value="Septembre 2026">
-Septembre 2026
-</option>
-
-<option value="Octobre 2026">
-Octobre 2026
-</option>
-
-<option value="Novembre 2026">
-Novembre 2026
-</option>
-
-<option value="Décembre 2026">
-Décembre 2026
-</option>
+<option value="Janvier 2026">Janvier 2026</option>
+<option value="Février 2026">Février 2026</option>
+<option value="Mars 2026">Mars 2026</option>
+<option value="Avril 2026">Avril 2026</option>
+<option value="Mai 2026">Mai 2026</option>
+<option value="Juin 2026">Juin 2026</option>
+<option value="Juillet 2026">Juillet 2026</option>
+<option value="Août 2026">Août 2026</option>
+<option value="Septembre 2026">Septembre 2026</option>
+<option value="Octobre 2026">Octobre 2026</option>
+<option value="Novembre 2026">Novembre 2026</option>
+<option value="Décembre 2026">Décembre 2026</option>
 
 </select>
 
@@ -492,7 +443,8 @@ Ajouter l'avance
 </form>
 
 </div>
-<!-- TEMPORAIRE -->
+
+<!-- ================= LISTE TEMPORAIRE ================= -->
 
 <div class="card">
 
@@ -534,14 +486,16 @@ DZD
 
 <div class="action-buttons">
 
-<button class="btn-print"
+<button
+class="btn-print"
 onclick="printReceipt()">
 
 Imprimer
 
 </button>
 
-<button class="btn-warning"
+<button
+class="btn-warning"
 onclick="transferToMain()">
 
 Transférer vers liste principale
@@ -552,7 +506,7 @@ Transférer vers liste principale
 
 </div>
 
-<!-- MAIN ADVANCES -->
+<!-- ================= LISTE PRINCIPALE ================= -->
 
 <div class="card">
 
@@ -636,179 +590,402 @@ DZD
 
 </div>
 
+<!-- ================= MODAL EMPLOYEES ================= -->
+
+<div
+class="modal-overlay"
+id="employeesModal">
+
+<div class="modal">
+
+<div class="modal-header">
+
+<h2>
+Liste des employés
+</h2>
+
+<button
+class="close-btn"
+onclick="closeModal('employeesModal')">
+
+X
+
+</button>
+
+</div>
+
+<table id="employees-table">
+
+<thead>
+
+<tr>
+
+<th>N°</th>
+<th>Nom</th>
+<th>Poste</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- ================= MODAL AJOUT EMPLOYE ================= -->
+
+<div
+class="modal-overlay"
+id="addEmployeeModal">
+
+<div class="modal">
+
+<div class="modal-header">
+
+<h2>
+Ajouter un employé
+</h2>
+
+<button
+class="close-btn"
+onclick="closeModal('addEmployeeModal')">
+
+X
+
+</button>
+
+</div>
+
+<form id="employee-form">
+
+<div class="form-grid">
+
+<input
+type="text"
+id="employeeNumber"
+placeholder="N°"
+readonly
+required>
+
+<input
+type="text"
+id="employeeName"
+placeholder="Nom et prénom"
+required>
+
+<input
+type="text"
+id="employeePosition"
+placeholder="Poste"
+required>
+
+</div>
+
+<br>
+
+<button
+type="submit"
+class="btn-primary">
+
+Ajouter l'employé
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
 <div id="print-area"></div>
+
 <script src="send.js"></script>
 
 <script>
+  /* ================= MODAL ================= */
 
-// =========================
-// EMPLOYEE FORM
-// =========================
+function openModal(id){
+
+document.getElementById(id).style.display = "flex";
+
+if(id === "addEmployeeModal"){
+
+let maxNumber = 0;
+
+employees.forEach(emp => {
+
+const num =
+parseInt(emp.number) || 0;
+
+if(num > maxNumber){
+maxNumber = num;
+}
+
+});
+
+document.getElementById(
+"employeeNumber"
+).value = maxNumber + 1;
+
+}
+
+}
+
+function closeModal(id){
+
+document.getElementById(id).style.display = "none";
+
+}
+
+window.onclick = function(event){
+
+document
+.querySelectorAll(".modal-overlay")
+.forEach(modal => {
+
+if(event.target === modal){
+
+modal.style.display = "none";
+
+}
+
+});
+
+};
+
+/* ================= EMPLOYEE FORM ================= */
 
 document
 .getElementById("employee-form")
 .addEventListener("submit", async function(e){
 
-  e.preventDefault();
+e.preventDefault();
 
-  await addEmployee(
-    document.getElementById("employeeNumber").value,
-    document.getElementById("employeeName").value,
-    document.getElementById("employeePosition").value
-  );
+await addEmployee(
+document.getElementById("employeeNumber").value,
+document.getElementById("employeeName").value,
+document.getElementById("employeePosition").value
+);
 
-  this.reset();
+this.reset();
+
+closeModal("addEmployeeModal");
 
 });
 
-// =========================
-// ADVANCE FORM
-// =========================
+/* ================= ADVANCE FORM ================= */
 
 document
 .getElementById("advance-form")
 .addEventListener("submit", async function(e){
 
-  e.preventDefault();
+e.preventDefault();
 
-  const type =
-    document.getElementById("advanceType").value;
+const type =
+document.getElementById("advanceType").value;
 
-  let details =
-    document.getElementById("advanceDetails").value;
+let details =
+document.getElementById("advanceDetails").value;
 
-  if(type === "T.Salaire"){
+if(type === "T.Salaire"){
 
-    const salaryMonth =
-      document.getElementById("salaryMonth");
-
-    details = salaryMonth.value;
-
-  }
-
-  await addTempAdvance(
-    document.getElementById("advanceDate").value,
-    document.getElementById("advanceEmployee").value,
-    document.getElementById("advanceAmount").value,
-    type,
-    details
-  );
-
-  this.reset();
-
-  document.getElementById("salaryMonth").style.display = "none";
-
-});
-
-// =========================
-// PRINT RECEIPT
-// =========================
-
-function printReceipt(){
-
-  const selected =
-    document.querySelectorAll(".temp-check:checked");
-
-  if(selected.length === 0){
-    alert("Sélectionnez au moins une ligne");
-    return;
-  }
-
-  let html = `
-  <div style="font-family:Arial;padding:20px;">
-  <h2 style="text-align:center;">
-  Sarl Algerian Trucks Services and Logistics
-  </h2>
-  <h3 style="text-align:center;">
-  Directeur financier : BENSBAA Nassim
-  </h3>
-  <hr>
-  <h2 style="text-align:center;">
-  REÇU DE CAISSE
-  </h2>
-  <table border="1" width="100%" style="border-collapse:collapse;">
-  <tr>
-  <th>Date</th>
-  <th>Employé</th>
-  <th>Montant</th>
-  <th>Type</th>
-  <th>Détails</th>
-  </tr>
-  `;
-
-  let total = 0;
-
-  selected.forEach(c => {
-
-    const row = Number(c.dataset.row);
-
-    const item = tempAdvances.find(x => x.row === row);
-
-    if(!item) return;
-
-    total += Number(item.amount || 0);
-
-    html += `
-    <tr>
-      <td>${item.date}</td>
-      <td>${item.name}</td>
-      <td>${item.amount}</td>
-      <td>${item.type}</td>
-      <td>${item.details}</td>
-    </tr>
-    `;
-
-  });
-
-  html += `
-  </table>
-  <h2 style="margin-top:20px;text-align:center;">
-  TOTAL : ${total.toFixed(2)} DZD
-  </h2>
-  </div>
-  `;
-
-  const win = window.open("", "_blank");
-  win.document.write(html);
-  win.document.close();
-  win.print();
+details =
+document.getElementById("salaryMonth").value;
 
 }
 
-// =========================
-// INIT
-// =========================
+await addTempAdvance(
+document.getElementById("advanceDate").value,
+document.getElementById("advanceEmployee").value,
+document.getElementById("advanceAmount").value,
+type,
+details
+);
 
-document.addEventListener("DOMContentLoaded", () => {
+this.reset();
 
-  loadAll();
-
-  // date automatique
-  const dateInput = document.getElementById("advanceDate");
-
-  if(dateInput){
-    dateInput.value = new Date().toISOString().split("T")[0];
-  }
-
-  // type change -> salary months
-  const typeSelect = document.getElementById("advanceType");
-  const salaryMonth = document.getElementById("salaryMonth");
-
-  if(typeSelect && salaryMonth){
-
-    typeSelect.addEventListener("change", function(){
-
-      if(this.value === "T.Salaire"){
-        salaryMonth.style.display = "block";
-      } else {
-        salaryMonth.style.display = "none";
-      }
-
-    });
-
-  }
+document.getElementById(
+"salaryMonth"
+).style.display = "none";
 
 });
+
+/* ================= PRINT ================= */
+
+function printReceipt(){
+
+const rows =
+document.querySelectorAll(
+"#temp-table tbody tr"
+);
+
+if(rows.length === 0){
+
+alert("Aucune donnée à imprimer");
+return;
+
+}
+
+let total = 0;
+
+let html = `
+<div style="font-family:Arial;padding:20px;">
+
+<h2 style="text-align:center;">
+Sarl Algerian Trucks Services and Logistics
+</h2>
+
+<h3 style="text-align:center;">
+Directeur financier : BENSBAA Nassim
+</h3>
+
+<hr>
+
+<h2 style="text-align:center;">
+REÇU DE CAISSE
+</h2>
+
+<table
+border="1"
+width="100%"
+style="border-collapse:collapse;">
+
+<tr>
+<th>Date</th>
+<th>Employé</th>
+<th>Montant</th>
+<th>Type</th>
+<th>Détails</th>
+</tr>
+`;
+
+rows.forEach(row => {
+
+const cells =
+row.querySelectorAll("td");
+
+const date =
+cells[1]?.innerText || "";
+
+const emp =
+cells[2]?.innerText || "";
+
+const montant =
+parseFloat(cells[3]?.innerText) || 0;
+
+const type =
+cells[4]?.innerText || "";
+
+const details =
+cells[5]?.innerText || "";
+
+total += montant;
+
+html += `
+<tr>
+<td>${date}</td>
+<td>${emp}</td>
+<td>${montant}</td>
+<td>${type}</td>
+<td>${details}</td>
+</tr>
+`;
+
+});
+
+html += `
+</table>
+
+<h2
+style="
+text-align:center;
+margin-top:20px;">
+
+TOTAL :
+${total.toFixed(2)} DZD
+
+</h2>
+
+</div>
+`;
+
+const win =
+window.open("", "_blank");
+
+win.document.write(html);
+win.document.close();
+win.print();
+
+}
+
+/* ================= INIT ================= */
+
+document.addEventListener(
+"DOMContentLoaded",
+() => {
+
+loadAll();
+
+const dateInput =
+document.getElementById(
+"advanceDate"
+);
+
+if(dateInput){
+
+dateInput.value =
+new Date()
+.toISOString()
+.split("T")[0];
+
+}
+
+const typeSelect =
+document.getElementById(
+"advanceType"
+);
+
+const salaryMonth =
+document.getElementById(
+"salaryMonth"
+);
+
+if(typeSelect && salaryMonth){
+
+typeSelect.addEventListener(
+"change",
+function(){
+
+if(
+this.value ===
+"T.Salaire"
+){
+
+salaryMonth.style.display =
+"block";
+
+}else{
+
+salaryMonth.style.display =
+"none";
+
+}
+
+}
+);
+
+}
+
+}
+);
+
 </script>
 
 </body>
