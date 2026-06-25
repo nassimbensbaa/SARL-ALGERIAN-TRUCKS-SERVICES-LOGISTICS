@@ -1,492 +1,815 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestion des Avances ATSL</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-    body{background:#eaf4ff;color:#333;padding:10px}
-    header{background:linear-gradient(135deg,#0066cc,#0099ff);color:#fff;padding:18px;border-radius:10px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.15);margin-bottom:15px}
-    header h1{font-size:22px;font-weight:700}
-    header h3{margin-top:4px;font-size:15px;font-weight:400}
-    .container{display:flex;gap:14px;align-items:flex-start}
-    .left-panel{width:260px;background:#fff;border-radius:10px;padding:12px;box-shadow:0 3px 10px rgba(0,0,0,.08);position:sticky;top:10px}
-    .right-panel{flex:1;display:flex;flex-direction:column;gap:14px}
-    .card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 3px 10px rgba(0,0,0,.08)}
-    .card h2{color:#0066cc;margin-bottom:10px;font-size:18px}
-    .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
-    input,select{width:100%;padding:8px;border:1px solid #d0d0d0;border-radius:6px;font-size:13px;outline:none}
-    input:focus,select:focus{border-color:#0099ff}
-    button{border:none;padding:8px 12px;border-radius:6px;cursor:pointer;font-weight:600;transition:.2s;font-size:13px}
-    .btn-primary{background:#007bff;color:#fff}
-    .btn-primary:hover{background:#0062cc}
-    .btn-success{background:#198754;color:#fff}
-    .btn-success:hover{background:#157347}
-    .btn-danger{background:#dc3545;color:#fff}
-    .btn-danger:hover{background:#bb2d3b}
-    .btn-warning{background:#fd7e14;color:#fff}
-    .btn-warning:hover{background:#dc6502}
-    .btn-print{background:#6c757d;color:#fff}
-    .btn-print:hover{background:#565e64}
-    .btn-edit{background:#17a2b8;color:#fff}
-    .btn-edit:hover{background:#138496}
-    .btn-sync{background:#28a745;color:#fff}
-    .btn-sync:hover{background:#218838}
-    .loading{background:rgba(255,255,255,0.8);padding:10px;border-radius:8px;text-align:center;color:#0066cc;font-weight:500;display:none}
-    table{width:100%;border-collapse:collapse;margin-top:6px}
-    th{background:#007bff;color:#fff;padding:6px 4px;font-size:12px;text-align:center}
-    td{padding:6px 4px;border:1px solid #ddd;font-size:12px;text-align:center}
-    tbody tr:nth-child(even){background:#f8fbff}
-    .total-box{margin-top:10px;font-size:15px;font-weight:700;color:#198754}
-    .action-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .action-icons{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
-    .action-icons button{padding:3px 7px;font-size:13px;border-radius:4px;min-width:32px}
-    .sync-bar{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
-    .sync-bar button{display:flex;align-items:center;gap:6px}
-    #print-area{display:none}
-    @media(max-width:768px){.container{flex-direction:column}.left-panel{width:100%;position:relative;top:auto}}
-    @media print{body{background:#fff}header,button{display:none}.card{box-shadow:none;border:none}#print-area{display:block}}
-  </style>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Gestion des Avances ATSL
+</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#eaf4ff;
+color:#333;
+padding:20px;
+}
+
+header{
+background:linear-gradient(
+135deg,
+#0066cc,
+#0099ff
+);
+color:#fff;
+padding:25px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,.15);
+margin-bottom:20px;
+}
+
+header h1{
+font-size:30px;
+font-weight:700;
+}
+
+header h3{
+margin-top:8px;
+font-weight:400;
+}
+
+.container{
+display:flex;
+gap:20px;
+align-items:flex-start;
+}
+
+.left-panel{
+width:320px;
+background:#fff;
+border-radius:12px;
+padding:15px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+position:sticky;
+top:20px;
+}
+
+.right-panel{
+flex:1;
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.card{
+background:#fff;
+border-radius:12px;
+padding:20px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.card h2{
+color:#0066cc;
+margin-bottom:15px;
+font-size:22px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(220px,1fr)
+);
+gap:12px;
+}
+
+input,
+select{
+width:100%;
+padding:10px;
+border:1px solid #d0d0d0;
+border-radius:8px;
+font-size:14px;
+outline:none;
+}
+
+input:focus,
+select:focus{
+border-color:#0099ff;
+}
+
+button{
+border:none;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+transition:.3s;
+}
+
+.btn-primary{
+background:#007bff;
+color:white;
+}
+
+.btn-primary:hover{
+background:#0062cc;
+}
+
+.btn-success{
+background:#198754;
+color:white;
+}
+
+.btn-success:hover{
+background:#157347;
+}
+
+.btn-danger{
+background:#dc3545;
+color:white;
+}
+
+.btn-danger:hover{
+background:#bb2d3b;
+}
+
+.btn-warning{
+background:#fd7e14;
+color:white;
+}
+
+.btn-warning:hover{
+background:#dc6502;
+}
+
+.btn-print{
+background:#6c757d;
+color:white;
+}
+
+.btn-print:hover{
+background:#565e64;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th{
+background:#007bff;
+color:white;
+padding:10px;
+font-size:14px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+font-size:14px;
+}
+
+tbody tr:nth-child(even){
+background:#f8fbff;
+}
+
+.total-box{
+margin-top:15px;
+font-size:18px;
+font-weight:700;
+color:#198754;
+}
+
+.action-buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:15px;
+}
+
+#print-area{
+display:none;
+}
+
+@media(max-width:1000px){
+
+.container{
+flex-direction:column;
+}
+
+.left-panel{
+width:100%;
+position:relative;
+top:auto;
+}
+
+}
+
+@media print{
+
+body{
+background:white;
+}
+
+header,
+button{
+display:none;
+}
+
+.card{
+box-shadow:none;
+border:none;
+}
+
+#print-area{
+display:block;
+}
+
+}
+
+</style>
+
 </head>
-<body>
+  <body>
+
 <header>
-  <h1>Sarl Algerian Trucks Services and Logistics</h1>
-  <h3>Directeur financier : BENSBAA Nassim</h3>
+
+<h1>
+Sarl Algerian Trucks Services and Logistics
+</h1>
+
+<h3>
+Directeur financier :
+BENSBAA Nassim
+</h3>
+
 </header>
+
 <div class="container">
-  <div class="left-panel">
-    <div class="card">
-      <h2>Liste des employés</h2>
-      <div class="sync-bar">
-        <button class="btn-sync" onclick="syncFromSheet()" style="font-size:12px;padding:5px 10px;">🔄 Synchroniser</button>
-        <span style="font-size:11px;color:#666;" id="syncStatus">Dernière synchro: jamais</span>
-      </div>
-      <table id="employees-table">
-        <thead><tr><th>N°</th><th>Nom</th><th>Poste</th><th>Actions</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </div>
-  <div class="right-panel">
-    <div class="card">
-      <h2>Ajouter un employé</h2>
-      <form id="employee-form">
-        <div class="form-grid">
-          <input type="text" id="employeeNumber" placeholder="N°" required>
-          <input type="text" id="employeeName" placeholder="Nom et prénom" required>
-          <input type="text" id="employeePosition" placeholder="Poste" required>
-        </div>
-        <br>
-        <button type="submit" class="btn-primary">Ajouter l'employé</button>
-      </form>
-    </div>
-    <div class="card">
-      <h2>Ajouter une avance</h2>
-      <form id="advance-form">
-        <div class="form-grid">
-          <input type="date" id="advanceDate" required>
-          <select id="advanceEmployee" required><option value="">Sélectionner un employé</option></select>
-          <input type="number" id="advanceAmount" placeholder="Montant" required>
-          <select id="advanceType" required>
-            <option value="">Type d'avance</option>
-            <option value="T.Salaire">T.Salaire</option>
-            <option value="Réparation véhicule">Réparation véhicule</option>
-            <option value="Prêt">Prêt</option>
-            <option value="Prime alimentation">Prime alimentation</option>
-            <option value="Prime mission">Prime mission</option>
-          </select>
-          <select id="salaryMonth" style="display:none;">
-            <option value="">Choisir le mois</option>
-            <option value="Janvier 2026">Janvier 2026</option><option value="Février 2026">Février 2026</option>
-            <option value="Mars 2026">Mars 2026</option><option value="Avril 2026">Avril 2026</option>
-            <option value="Mai 2026">Mai 2026</option><option value="Juin 2026">Juin 2026</option>
-            <option value="Juillet 2026">Juillet 2026</option><option value="Août 2026">Août 2026</option>
-            <option value="Septembre 2026">Septembre 2026</option><option value="Octobre 2026">Octobre 2026</option>
-            <option value="Novembre 2026">Novembre 2026</option><option value="Décembre 2026">Décembre 2026</option>
-          </select>
-          <input type="text" id="advanceDetails" placeholder="Détails">
-        </div>
-        <br>
-        <button type="submit" class="btn-success">Ajouter l'avance</button>
-      </form>
-    </div>
-    <div class="card">
-      <h2>Liste Temporaire</h2>
-      <table id="temp-table">
-        <thead><tr><th>Choisir</th><th>Date</th><th>Employé</th><th>Montant</th><th>Type</th><th>Détails</th><th>Actions</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <div class="total-box">Total : <span id="temp-total">0.00</span> DZD</div>
-      <div class="action-buttons">
-        <button class="btn-print" onclick="printReceipt()">Imprimer</button>
-        <button class="btn-warning" onclick="transferToMain()">Transférer vers liste principale</button>
-      </div>
-    </div>
-    <div class="card">
-      <h2>Liste des avances</h2>
-      <div class="form-grid">
-        <select id="employeeFilter"><option value="">Tous les employés</option></select>
-        <select id="typeFilter">
-          <option value="">Tous les types</option>
-          <option value="T.Salaire">T.Salaire</option>
-          <option value="Réparation véhicule">Réparation véhicule</option>
-          <option value="Prêt">Prêt</option>
-          <option value="Prime alimentation">Prime alimentation</option>
-          <option value="Prime mission">Prime mission</option>
-        </select>
-      </div>
-      <table id="main-table">
-        <thead><tr><th>Date</th><th>Employé</th><th>Montant</th><th>Type</th><th>Détails</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <div class="total-box">Total général : <span id="main-total">0.00</span> DZD</div>
-    </div>
-  </div>
+
+<!-- LEFT PANEL -->
+
+<div class="left-panel">
+
+<div class="card">
+
+<h2>
+Liste des employés
+</h2>
+
+<table id="employees-table">
+
+<thead>
+
+<tr>
+
+<th>N°</th>
+<th>Nom</th>
+<th>Poste</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
 </div>
+
+</div>
+
+<!-- RIGHT PANEL -->
+
+<div class="right-panel">
+
+<!-- AJOUT EMPLOYE -->
+
+<div class="card">
+
+<h2>
+Ajouter un employé
+</h2>
+
+<form id="employee-form">
+
+<div class="form-grid">
+
+<input
+type="text"
+id="employeeNumber"
+placeholder="N°"
+required>
+
+<input
+type="text"
+id="employeeName"
+placeholder="Nom et prénom"
+required>
+
+<input
+type="text"
+id="employeePosition"
+placeholder="Poste"
+required>
+
+</div>
+
+<br>
+
+<button
+type="submit"
+class="btn-primary">
+
+Ajouter l'employé
+
+</button>
+
+</form>
+
+</div>
+
+<!-- AJOUT AVANCE -->
+
+<div class="card">
+
+<h2>
+Ajouter une avance
+</h2>
+
+<form id="advance-form">
+
+<div class="form-grid">
+
+<input
+type="date"
+id="advanceDate"
+required>
+
+<select
+id="advanceEmployee"
+required>
+
+<option value="">
+Sélectionner un employé
+</option>
+
+</select>
+
+<input
+type="number"
+id="advanceAmount"
+placeholder="Montant"
+required>
+
+<select
+id="advanceType"
+required>
+
+<option value="">
+Type d'avance
+</option>
+
+<option value="T.Salaire">
+T.Salaire
+</option>
+
+<option value="Réparation véhicule">
+Réparation véhicule
+</option>
+
+<option value="Prêt">
+Prêt
+</option>
+
+<option value="Prime alimentation">
+Prime alimentation
+</option>
+
+<option value="Prime mission">
+Prime mission
+</option>
+
+</select>
+
+<select
+id="salaryMonth"
+style="display:none;">
+
+<option value="">
+Choisir le mois
+</option>
+
+<option value="Janvier 2026">
+Janvier 2026
+</option>
+
+<option value="Février 2026">
+Février 2026
+</option>
+
+<option value="Mars 2026">
+Mars 2026
+</option>
+
+<option value="Avril 2026">
+Avril 2026
+</option>
+
+<option value="Mai 2026">
+Mai 2026
+</option>
+
+<option value="Juin 2026">
+Juin 2026
+</option>
+
+<option value="Juillet 2026">
+Juillet 2026
+</option>
+
+<option value="Août 2026">
+Août 2026
+</option>
+
+<option value="Septembre 2026">
+Septembre 2026
+</option>
+
+<option value="Octobre 2026">
+Octobre 2026
+</option>
+
+<option value="Novembre 2026">
+Novembre 2026
+</option>
+
+<option value="Décembre 2026">
+Décembre 2026
+</option>
+
+</select>
+
+<input
+type="text"
+id="advanceDetails"
+placeholder="Détails">
+
+</div>
+
+<br>
+
+<button
+type="submit"
+class="btn-success">
+
+Ajouter l'avance
+
+</button>
+
+</form>
+
+</div>
+<!-- TEMPORAIRE -->
+
+<div class="card">
+
+<h2>
+Liste Temporaire
+</h2>
+
+<table id="temp-table">
+
+<thead>
+
+<tr>
+
+<th>Choisir</th>
+<th>Date</th>
+<th>Employé</th>
+<th>Montant</th>
+<th>Type</th>
+<th>Détails</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+<div class="total-box">
+
+Total :
+<span id="temp-total">0.00</span>
+DZD
+
+</div>
+
+<div class="action-buttons">
+
+<button class="btn-print"
+onclick="printReceipt()">
+
+Imprimer
+
+</button>
+
+<button class="btn-warning"
+onclick="transferToMain()">
+
+Transférer vers liste principale
+
+</button>
+
+</div>
+
+</div>
+
+<!-- MAIN ADVANCES -->
+
+<div class="card">
+
+<h2>
+Liste des avances
+</h2>
+
+<div class="form-grid">
+
+<select id="employeeFilter">
+
+<option value="">
+Tous les employés
+</option>
+
+</select>
+
+<select id="typeFilter">
+
+<option value="">
+Tous les types
+</option>
+
+<option value="T.Salaire">
+T.Salaire
+</option>
+
+<option value="Réparation véhicule">
+Réparation véhicule
+</option>
+
+<option value="Prêt">
+Prêt
+</option>
+
+<option value="Prime alimentation">
+Prime alimentation
+</option>
+
+<option value="Prime mission">
+Prime mission
+</option>
+
+</select>
+
+</div>
+
+<table id="main-table">
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+<th>Employé</th>
+<th>Montant</th>
+<th>Type</th>
+<th>Détails</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+<div class="total-box">
+
+Total général :
+<span id="main-total">0.00</span>
+DZD
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 <div id="print-area"></div>
+<script src="send.js"></script>
 
 <script>
-  // ====== Configuration Google Sheets ======
-  // IMPORTANT: Remplacez ces valeurs par les vôtres
-  const GOOGLE_SHEETS_CONFIG = {
-    // Pour utiliser l'API Google Sheets v4
-    apiKey: 'VOTRE_API_KEY', // Créée dans Google Cloud Console
-    sheetId: 'VOTRE_SHEET_ID', // L'ID de votre Google Sheet (dans l'URL)
-    range: 'Employés!A2:C', // Plage de données (feuille "Employés" colonnes A à C)
-    // Alternative: Utiliser un script Google Apps Script déployé comme web app
-    // webAppUrl: 'https://script.google.com/macros/s/VOTRE_SCRIPT_ID/exec'
-  };
 
-  // ====== Données ======
-  let employees = [];
-  let tempAdvances = [];
-  let mainAdvances = [];
-  let rowCounter = 0;
-  let editIndex = null;
-  let lastSync = null;
+// =========================
+// EMPLOYEE FORM
+// =========================
 
-  // ====== Synchronisation avec Google Sheets ======
-  async function syncFromSheet() {
-    const statusEl = document.getElementById('syncStatus');
-    statusEl.textContent = '🔄 Synchronisation en cours...';
-    statusEl.style.color = '#fd7e14';
+document
+.getElementById("employee-form")
+.addEventListener("submit", async function(e){
 
-    try {
-      // Méthode 1: Utiliser l'API Google Sheets (nécessite une clé API)
-      // Décommentez cette partie si vous utilisez l'API directement
-      /*
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${GOOGLE_SHEETS_CONFIG.sheetId}/values/${GOOGLE_SHEETS_CONFIG.range}?key=${GOOGLE_SHEETS_CONFIG.apiKey}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      
-      if (data.values && data.values.length > 0) {
-        employees = data.values.map(row => ({
-          num: row[0] || '',
-          name: row[1] || '',
-          position: row[2] || ''
-        }));
-        renderEmployees();
-        populateEmployeeSelects();
-        lastSync = new Date();
-        statusEl.textContent = `✅ Synchronisé à ${lastSync.toLocaleTimeString()}`;
-        statusEl.style.color = '#28a745';
-      }
-      */
+  e.preventDefault();
 
-      // Méthode 2: Utiliser un Web App (recommandé pour la sécurité)
-      // Décommentez si vous avez déployé un script Google Apps Script
-      /*
-      const response = await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl);
-      const data = await response.json();
-      
-      if (data.data && data.data.length > 0) {
-        employees = data.data.map(row => ({
-          num: row[0] || '',
-          name: row[1] || '',
-          position: row[2] || ''
-        }));
-        renderEmployees();
-        populateEmployeeSelects();
-        lastSync = new Date();
-        statusEl.textContent = `✅ Synchronisé à ${lastSync.toLocaleTimeString()}`;
-        statusEl.style.color = '#28a745';
-      }
-      */
+  await addEmployee(
+    document.getElementById("employeeNumber").value,
+    document.getElementById("employeeName").value,
+    document.getElementById("employeePosition").value
+  );
 
-      // ====== DONNÉES DE TEST (à remplacer par votre vraie API) ======
-      // Simule une réponse de Google Sheets pour démonstration
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simule un délai réseau
-      
-      // Données simulées (remplacez par vos vraies données)
-      const testData = [
-        ['001', 'Ahmed Benali', 'Chauffeur'],
-        ['002', 'Karim Mansouri', 'Mécanicien'],
-        ['003', 'Lydia Hakim', 'Comptable'],
-        ['004', 'Sofiane Amir', 'Logisticien'],
-        ['005', 'Nadia Khelil', 'RH']
-      ];
-      
-      employees = testData.map(row => ({
-        num: row[0] || '',
-        name: row[1] || '',
-        position: row[2] || ''
-      }));
-      
-      renderEmployees();
-      populateEmployeeSelects();
-      lastSync = new Date();
-      statusEl.textContent = `✅ Synchronisé à ${lastSync.toLocaleTimeString()}`;
-      statusEl.style.color = '#28a745';
+  this.reset();
 
-      alert(`✅ Synchronisation réussie! ${employees.length} employés chargés.`);
-      
-    } catch (error) {
-      console.error('Erreur de synchronisation:', error);
-      statusEl.textContent = '❌ Erreur de synchronisation';
-      statusEl.style.color = '#dc3545';
-      alert('❌ Erreur lors de la synchronisation. Vérifiez la console pour plus de détails.');
-    }
+});
+
+// =========================
+// ADVANCE FORM
+// =========================
+
+document
+.getElementById("advance-form")
+.addEventListener("submit", async function(e){
+
+  e.preventDefault();
+
+  const type =
+    document.getElementById("advanceType").value;
+
+  let details =
+    document.getElementById("advanceDetails").value;
+
+  if(type === "T.Salaire"){
+
+    const salaryMonth =
+      document.getElementById("salaryMonth");
+
+    details = salaryMonth.value;
+
   }
 
-  // ====== Fonctions employés ======
-  async function addEmployee(num, name, position) {
-    if (editIndex !== null) {
-      employees[editIndex] = { num, name, position };
-      editIndex = null;
-    } else {
-      employees.push({ num, name, position });
-    }
-    renderEmployees();
-    populateEmployeeSelects();
-    // Optionnel: Sauvegarder automatiquement dans Google Sheets
-    // await saveToSheet();
+  await addTempAdvance(
+    document.getElementById("advanceDate").value,
+    document.getElementById("advanceEmployee").value,
+    document.getElementById("advanceAmount").value,
+    type,
+    details
+  );
+
+  this.reset();
+
+  document.getElementById("salaryMonth").style.display = "none";
+
+});
+
+// =========================
+// PRINT RECEIPT
+// =========================
+
+function printReceipt(){
+
+  const selected =
+    document.querySelectorAll(".temp-check:checked");
+
+  if(selected.length === 0){
+    alert("Sélectionnez au moins une ligne");
+    return;
   }
 
-  function deleteEmployee(index) {
-    if (confirm('Supprimer cet employé ?')) {
-      employees.splice(index, 1);
-      renderEmployees();
-      populateEmployeeSelects();
-    }
-  }
+  let html = `
+  <div style="font-family:Arial;padding:20px;">
+  <h2 style="text-align:center;">
+  Sarl Algerian Trucks Services and Logistics
+  </h2>
+  <h3 style="text-align:center;">
+  Directeur financier : BENSBAA Nassim
+  </h3>
+  <hr>
+  <h2 style="text-align:center;">
+  REÇU DE CAISSE
+  </h2>
+  <table border="1" width="100%" style="border-collapse:collapse;">
+  <tr>
+  <th>Date</th>
+  <th>Employé</th>
+  <th>Montant</th>
+  <th>Type</th>
+  <th>Détails</th>
+  </tr>
+  `;
 
-  function editEmployee(index) {
-    const emp = employees[index];
-    document.getElementById('employeeNumber').value = emp.num;
-    document.getElementById('employeeName').value = emp.name;
-    document.getElementById('employeePosition').value = emp.position;
-    editIndex = index;
-    document.querySelector('#employee-form .btn-primary').textContent = 'Modifier l\'employé';
-  }
+  let total = 0;
 
-  function renderEmployees() {
-    const tbody = document.querySelector('#employees-table tbody');
-    tbody.innerHTML = '';
-    employees.forEach((emp, i) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${emp.num}</td>
-        <td>${emp.name}</td>
-        <td>${emp.position}</td>
-        <td>
-          <div class="action-icons">
-            <button class="btn-edit" onclick="editEmployee(${i})" title="Modifier">✏️</button>
-            <button class="btn-danger" onclick="deleteEmployee(${i})" title="Supprimer">🗑️</button>
-          </div>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-    if (editIndex === null) {
-      document.querySelector('#employee-form .btn-primary').textContent = 'Ajouter l\'employé';
-    }
-  }
+  selected.forEach(c => {
 
-  function populateEmployeeSelects() {
-    const selects = ['advanceEmployee', 'employeeFilter'];
-    selects.forEach(id => {
-      const sel = document.getElementById(id);
-      if (!sel) return;
-      const current = sel.value;
-      sel.innerHTML = '<option value="">Sélectionner un employé</option>';
-      employees.forEach(emp => {
-        const opt = document.createElement('option');
-        opt.value = emp.name;
-        opt.textContent = emp.name;
-        sel.appendChild(opt);
-      });
-      if (current) sel.value = current;
-    });
-  }
+    const row = Number(c.dataset.row);
 
-  // ====== Avances temporaires ======
-  async function addTempAdvance(date, employee, amount, type, details) {
-    if (!employee) { alert('Choisissez un employé'); return; }
-    const row = ++rowCounter;
-    tempAdvances.push({ row, date, employee, amount: parseFloat(amount) || 0, type, details });
-    renderTemp();
-  }
+    const item = tempAdvances.find(x => x.row === row);
 
-  function deleteTemp(row) {
-    tempAdvances = tempAdvances.filter(a => a.row !== row);
-    renderTemp();
-  }
+    if(!item) return;
 
-  function renderTemp() {
-    const tbody = document.querySelector('#temp-table tbody');
-    tbody.innerHTML = '';
-    let total = 0;
-    tempAdvances.forEach((a) => {
-      total += a.amount;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><input type="checkbox" class="temp-check" data-row="${a.row}"></td>
-        <td>${a.date}</td><td>${a.employee}</td><td>${a.amount.toFixed(2)}</td>
-        <td>${a.type}</td><td>${a.details || ''}</td>
-        <td><button class="btn-danger" style="padding:3px 6px;font-size:11px;" onclick="deleteTemp(${a.row})">✕</button></td>
-      `;
-      tbody.appendChild(tr);
-    });
-    document.getElementById('temp-total').textContent = total.toFixed(2);
-  }
+    total += Number(item.amount || 0);
 
-  // ====== Transfert ======
-  function transferToMain() {
-    if (tempAdvances.length === 0) { alert('Aucune avance à transférer'); return; }
-    if (!confirm('Transférer toutes les avances temporaires vers la liste principale ?')) return;
-    mainAdvances.push(...tempAdvances.map(a => ({
-      date: a.date,
-      employee: a.employee,
-      amount: a.amount,
-      type: a.type,
-      details: a.details || ''
-    })));
-    tempAdvances = [];
-    renderTemp();
-    renderMain();
-    updateFilters();
-    alert('Transfert effectué avec succès');
-  }
+    html += `
+    <tr>
+      <td>${item.date}</td>
+      <td>${item.name}</td>
+      <td>${item.amount}</td>
+      <td>${item.type}</td>
+      <td>${item.details}</td>
+    </tr>
+    `;
 
-  // ====== Avances principales ======
-  function renderMain() {
-    const tbody = document.querySelector('#main-table tbody');
-    tbody.innerHTML = '';
-    const empFilter = document.getElementById('employeeFilter').value;
-    const typeFilter = document.getElementById('typeFilter').value;
-    let filtered = mainAdvances.filter(a => {
-      return (empFilter === '' || a.employee === empFilter) &&
-             (typeFilter === '' || a.type === typeFilter);
-    });
-    let total = 0;
-    filtered.forEach(a => {
-      total += a.amount;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${a.date}</td><td>${a.employee}</td><td>${a.amount.toFixed(2)}</td><td>${a.type}</td><td>${a.details}</td>`;
-      tbody.appendChild(tr);
-    });
-    document.getElementById('main-total').textContent = total.toFixed(2);
-  }
-
-  function updateFilters() {
-    const empFilter = document.getElementById('employeeFilter');
-    const current = empFilter.value;
-    empFilter.innerHTML = '<option value="">Tous les employés</option>';
-    const names = [...new Set(mainAdvances.map(a => a.employee))];
-    names.forEach(n => {
-      const opt = document.createElement('option');
-      opt.value = n;
-      opt.textContent = n;
-      empFilter.appendChild(opt);
-    });
-    if (current) empFilter.value = current;
-  }
-
-  // ====== Impression ======
-  function printReceipt() {
-    const selected = document.querySelectorAll('.temp-check:checked');
-    if (selected.length === 0) { alert('Sélectionnez au moins une ligne'); return; }
-    let html = `<div style="font-family:Arial;padding:20px;">
-      <h2 style="text-align:center;">Sarl Algerian Trucks Services and Logistics</h2>
-      <h3 style="text-align:center;">Directeur financier : BENSBAA Nassim</h3>
-      <hr><h2 style="text-align:center;">REÇU DE CAISSE</h2>
-      <table border="1" width="100%" style="border-collapse:collapse;font-size:12px;">
-      <tr><th>Date</th><th>Employé</th><th>Montant</th><th>Type</th><th>Détails</th></tr>`;
-    let total = 0;
-    selected.forEach(c => {
-      const row = Number(c.dataset.row);
-      const item = tempAdvances.find(x => x.row === row);
-      if (!item) return;
-      total += item.amount;
-      html += `<tr><td>${item.date}</td><td>${item.employee}</td><td>${item.amount.toFixed(2)}</td><td>${item.type}</td><td>${item.details}</td></tr>`;
-    });
-    html += `</table><h2 style="margin-top:20px;text-align:center;">TOTAL : ${total.toFixed(2)} DZD</h2></div>`;
-    const win = window.open('', '_blank');
-    win.document.write(html);
-    win.document.close();
-    win.print();
-  }
-
-  // ====== Sauvegarde vers Google Sheets (optionnel) ======
-  async function saveToSheet() {
-    // À implémenter si vous voulez sauvegarder automatiquement
-    // Utilisez un web app ou l'API pour envoyer les données
-    console.log('Sauvegarde vers Google Sheets:', employees);
-  }
-
-  // ====== Événements ======
-  document.addEventListener('DOMContentLoaded', () => {
-    // Chargement automatique au démarrage
-    syncFromSheet();
-
-    // Ajout/Modification employé
-    document.getElementById('employee-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      await addEmployee(
-        document.getElementById('employeeNumber').value,
-        document.getElementById('employeeName').value,
-        document.getElementById('employeePosition').value
-      );
-      this.reset();
-      editIndex = null;
-      document.querySelector('#employee-form .btn-primary').textContent = 'Ajouter l\'employé';
-    });
-
-    // Ajout avance
-    document.getElementById('advance-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const type = document.getElementById('advanceType').value;
-      let details = document.getElementById('advanceDetails').value;
-      if (type === 'T.Salaire') {
-        details = document.getElementById('salaryMonth').value;
-        if (!details) { alert('Choisissez un mois pour T.Salaire'); return; }
-      }
-      await addTempAdvance(
-        document.getElementById('advanceDate').value,
-        document.getElementById('advanceEmployee').value,
-        document.getElementById('advanceAmount').value,
-        type,
-        details
-      );
-      this.reset();
-      document.getElementById('salaryMonth').style.display = 'none';
-      document.getElementById('advanceDate').value = new Date().toISOString().split('T')[0];
-    });
-
-    // Afficher mois
-    document.getElementById('advanceType').addEventListener('change', function() {
-      document.getElementById('salaryMonth').style.display = this.value === 'T.Salaire' ? 'block' : 'none';
-    });
-
-    // Filtres
-    document.getElementById('employeeFilter').addEventListener('change', renderMain);
-    document.getElementById('typeFilter').addEventListener('change', renderMain);
-
-    // Date par défaut
-    document.getElementById('advanceDate').value = new Date().toISOString().split('T')[0];
   });
+
+  html += `
+  </table>
+  <h2 style="margin-top:20px;text-align:center;">
+  TOTAL : ${total.toFixed(2)} DZD
+  </h2>
+  </div>
+  `;
+
+  const win = window.open("", "_blank");
+  win.document.write(html);
+  win.document.close();
+  win.print();
+
+}
+
+// =========================
+// INIT
+// =========================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  loadAll();
+
+  // date automatique
+  const dateInput = document.getElementById("advanceDate");
+
+  if(dateInput){
+    dateInput.value = new Date().toISOString().split("T")[0];
+  }
+
+  // type change -> salary months
+  const typeSelect = document.getElementById("advanceType");
+  const salaryMonth = document.getElementById("salaryMonth");
+
+  if(typeSelect && salaryMonth){
+
+    typeSelect.addEventListener("change", function(){
+
+      if(this.value === "T.Salaire"){
+        salaryMonth.style.display = "block";
+      } else {
+        salaryMonth.style.display = "none";
+      }
+
+    });
+
+  }
+
+});
 </script>
+
 </body>
 </html>
