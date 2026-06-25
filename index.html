@@ -42,15 +42,13 @@ margin-bottom:20px;
 header h1{font-size:30px;font-weight:700;}
 header h3{margin-top:8px;font-weight:400;}
 
-/* ================= ACTION BUTTONS ================= */
+/* ================= BUTTONS ================= */
 
 .action-buttons{
 display:flex;
 gap:10px;
 margin-bottom:15px;
 }
-
-/* ================= BUTTONS ================= */
 
 button{
 border:none;
@@ -65,6 +63,7 @@ transition:.3s;
 .btn-success{background:#198754;color:white;}
 .btn-warning{background:#fd7e14;color:white;}
 .btn-danger{background:#dc3545;color:white;}
+.btn-print{background:#6c757d;color:white;}
 
 /* ================= LAYOUT ================= */
 
@@ -91,7 +90,7 @@ flex-direction:column;
 gap:20px;
 }
 
-/* ================= CARD ================= */
+/* ================= CARDS ================= */
 
 .card{
 background:#fff;
@@ -161,9 +160,54 @@ font-weight:700;
 color:#198754;
 }
 
-/* ================= HIDDEN ================= */
+/* ================= MODAL ================= */
 
-.hidden{
+.modal-overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.modal{
+background:#fff;
+width:90%;
+max-width:900px;
+border-radius:12px;
+padding:20px;
+animation:pop .2s ease;
+}
+
+@keyframes pop{
+from{transform:scale(0.9);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+.modal-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.close-btn{
+background:#dc3545;
+color:#fff;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* ================= PRINT ================= */
+
+#print-area{
 display:none;
 }
 
@@ -182,11 +226,11 @@ display:none;
 
 <div class="action-buttons">
 
-<button class="btn-primary" onclick="toggleEmployees()">
+<button class="btn-primary" onclick="openModal('employeesModal')">
 Liste des employés
 </button>
 
-<button class="btn-success" onclick="toggleAddEmployee()">
+<button class="btn-success" onclick="openModal('addEmployeeModal')">
 Ajouter un employé
 </button>
 
@@ -194,63 +238,22 @@ Ajouter un employé
 
 <div class="container">
 
-<!-- ================= LEFT PANEL (NE PAS TOUCHER TABLES OR BUTTONS INSIDE) ================= -->
-
-<div class="left-panel hidden" id="employeesPanel">
+<!-- LEFT PANEL (TEMPORARY OR OPTIONAL VIEW) -->
+<div class="left-panel">
 
 <div class="card">
 
-<h2>Liste des employés</h2>
-
-<table id="employees-table">
-
-<thead>
-<tr>
-<th>N°</th>
-<th>Nom</th>
-<th>Poste</th>
-<th>Actions</th>
-</tr>
-</thead>
-
-<tbody></tbody>
-
-</table>
+<h2>Accès rapide</h2>
+<p>Utilisez les boutons ci-dessus pour gérer les employés.</p>
 
 </div>
 
 </div>
 
-<!-- ================= RIGHT PANEL ================= -->
-
+<!-- RIGHT PANEL -->
 <div class="right-panel">
 
-<!-- ADD EMPLOYEE -->
-<div class="card hidden" id="addEmployeeCard">
-
-<h2>Ajouter un employé</h2>
-
-<form id="employee-form">
-
-<div class="form-grid">
-
-<input type="text" id="employeeNumber" placeholder="N°" required>
-<input type="text" id="employeeName" placeholder="Nom et prénom" required>
-<input type="text" id="employeePosition" placeholder="Poste" required>
-
-</div>
-
-<br>
-
-<button type="submit" class="btn-primary">
-Ajouter l'employé
-</button>
-
-</form>
-
-</div>
-
-<!-- ================= ADVANCE FORM (FULL ORIGINAL UNTOUCHED) ================= -->
+<!-- ================= ADVANCE FORM ================= -->
 
 <div class="card">
 
@@ -281,25 +284,27 @@ Ajouter l'employé
 
 <select id="salaryMonth" style="display:none;">
 <option value="">Choisir le mois</option>
-<option value="Janvier 2026">Janvier 2026</option>
-<option value="Février 2026">Février 2026</option>
-<option value="Mars 2026">Mars 2026</option>
-<option value="Avril 2026">Avril 2026</option>
-<option value="Mai 2026">Mai 2026</option>
-<option value="Juin 2026">Juin 2026</option>
-<option value="Juillet 2026">Juillet 2026</option>
-<option value="Août 2026">Août 2026</option>
-<option value="Septembre 2026">Septembre 2026</option>
-<option value="Octobre 2026">Octobre 2026</option>
-<option value="Novembre 2026">Novembre 2026</option>
-<option value="Décembre 2026">Décembre 2026</option>
+<option>Janvier 2026</option>
+<option>Février 2026</option>
+<option>Mars 2026</option>
+<option>Avril 2026</option>
+<option>Mai 2026</option>
+<option>Juin 2026</option>
+<option>Juillet 2026</option>
+<option>Août 2026</option>
+<option>Septembre 2026</option>
+<option>Octobre 2026</option>
+<option>Novembre 2026</option>
+<option>Décembre 2026</option>
 </select>
 
 <input type="text" id="advanceDetails" placeholder="Détails">
 
-<br><br>
+</div>
 
-<button type="submit" class="btn-success">
+<br>
+
+<button class="btn-success" type="submit">
 Ajouter l'avance
 </button>
 
@@ -307,8 +312,7 @@ Ajouter l'avance
 
 </div>
 
-<!-- ================= TEMP TABLE (UNCHANGED) ================= -->
-
+<!-- TEMP TABLE -->
 <div class="card">
 
 <h2>Liste Temporaire</h2>
@@ -342,35 +346,17 @@ Imprimer
 </button>
 
 <button class="btn-warning" onclick="transferToMain()">
-Transférer vers liste principale
+Transférer
 </button>
 
 </div>
 
 </div>
 
-<!-- ================= MAIN TABLE (UNCHANGED) ================= -->
-
+<!-- MAIN TABLE -->
 <div class="card">
 
 <h2>Liste des avances</h2>
-
-<div class="form-grid">
-
-<select id="employeeFilter">
-<option value="">Tous les employés</option>
-</select>
-
-<select id="typeFilter">
-<option value="">Tous les types</option>
-<option value="T.Salaire">T.Salaire</option>
-<option value="Réparation véhicule">Réparation véhicule</option>
-<option value="Prêt">Prêt</option>
-<option value="Prime alimentation">Prime alimentation</option>
-<option value="Prime mission">Prime mission</option>
-</select>
-
-</div>
 
 <table id="main-table">
 
@@ -398,23 +384,86 @@ Total général : <span id="main-total">0.00</span> DZD
 
 </div>
 
+<!-- ================= MODALS ================= -->
+
+<!-- EMPLOYEES MODAL -->
+<div class="modal-overlay" id="employeesModal">
+
+<div class="modal">
+
+<div class="modal-header">
+<h2>Liste des employés</h2>
+<button class="close-btn" onclick="closeModal('employeesModal')">X</button>
+</div>
+
+<table id="employees-table">
+
+<thead>
+<tr>
+<th>N°</th>
+<th>Nom</th>
+<th>Poste</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- ADD EMPLOYEE MODAL -->
+<div class="modal-overlay" id="addEmployeeModal">
+
+<div class="modal">
+
+<div class="modal-header">
+<h2>Ajouter un employé</h2>
+<button class="close-btn" onclick="closeModal('addEmployeeModal')">X</button>
+</div>
+
+<form id="employee-form">
+
+<div class="form-grid">
+
+<input type="text" id="employeeNumber" placeholder="N°" required>
+<input type="text" id="employeeName" placeholder="Nom et prénom" required>
+<input type="text" id="employeePosition" placeholder="Poste" required>
+
+</div>
+
+<br>
+
+<button class="btn-primary" type="submit">
+Ajouter l'employé
+</button>
+
+</form>
+
+</div>
+
+</div>
+
 <div id="print-area"></div>
 
 <script src="send.js"></script>
 
 <script>
 
-// ================= TOGGLE ONLY (SAFE) =================
+/* ================= MODAL CONTROL ================= */
 
-function toggleEmployees(){
-document.getElementById("employeesPanel").classList.toggle("hidden");
+function openModal(id){
+document.getElementById(id).style.display = "flex";
 }
 
-function toggleAddEmployee(){
-document.getElementById("addEmployeeCard").classList.toggle("hidden");
+function closeModal(id){
+document.getElementById(id).style.display = "none";
 }
 
-// ================= EMPLOYEE FORM =================
+/* ================= EMPLOYEE FORM ================= */
 
 document.getElementById("employee-form").addEventListener("submit", async function(e){
 
@@ -427,6 +476,8 @@ document.getElementById("employeePosition").value
 );
 
 this.reset();
+
+closeModal('addEmployeeModal');
 
 });
 
