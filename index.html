@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gestion des Avances ATSL</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+padding:20px;
+}
+
+.container{
+max-width:1400px;
+margin:auto;
+}
+
+header{
+background:#0d6efd;
+color:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+header h1{
+font-size:28px;
+}
+
+header p{
+margin-top:5px;
+}
+
+.card{
+background:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+h2{
+margin-bottom:15px;
+color:#0d6efd;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:10px;
+}
+
+input,
+select{
+padding:10px;
+border:1px solid #ccc;
+border-radius:6px;
+width:100%;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.btn-primary{
+background:#0d6efd;
+color:white;
+}
+
+.btn-danger{
+background:#dc3545;
+color:white;
+}
+
+.btn-success{
+background:#198754;
+color:white;
+}
+
+.btn-print{
+background:#6c757d;
+color:white;
+}
+
+.table-container{
+overflow:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th{
+background:#0d6efd;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+.search-box{
+margin-bottom:15px;
+}
+
+.total-box{
+font-size:20px;
+font-weight:bold;
+color:#198754;
+margin-top:10px;
+}
+
+@media print{
+
+button,
+.search-box,
+form{
+display:none;
+}
+
+body{
+background:white;
+}
+
+.card{
+box-shadow:none;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+<h1>Gestion des Avances ATSL</h1>
+<p>Directeur Financier : BENSBAA Nassim</p>
+</header>
+
+<!-- EMPLOYEES -->
+
+<div class="card">
+
+<h2>Liste des employés</h2>
+
+<form id="employeeForm">
+
+<div class="form-grid">
+
+<input
+type="text"
+id="employeeNumber"
+placeholder="N°"
+required>
+
+<input
+type="text"
+id="employeeName"
+placeholder="Nom et prénom"
+required>
+
+<input
+type="text"
+id="employeePosition"
+placeholder="Poste"
+required>
+
+<button
+type="submit"
+class="btn-primary">
+Ajouter
+</button>
+
+</div>
+
+</form>
+
+<div class="table-container">
+
+<table id="employeesTable">
+
+<thead>
+<tr>
+<th>N°</th>
+<th>Nom et prénom</th>
+<th>Poste</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- ADVANCES -->
+
+<div class="card">
+
+<h2>Ajouter une avance</h2>
+
+<form id="advanceForm">
+
+<div class="form-grid">
+
+<input
+type="date"
+id="advanceDate"
+required>
+
+<select
+id="advanceEmployee"
+required>
+<option value="">
+Sélectionner un employé
+</option>
+</select>
+
+<input
+type="number"
+id="advanceAmount"
+placeholder="Montant"
+required>
+
+<select
+id="advanceType"
+required>
+
+<option value="">
+Type
+</option>
+
+<option value="T.Salaire">
+T.Salaire
+</option>
+
+<option value="Réparation">
+Réparation
+</option>
+
+<option value="Prêt">
+Prêt
+</option>
+
+<option value="Alimentation">
+Alimentation
+</option>
+
+<option value="Mission">
+Mission
+</option>
+
+</select>
+
+<input
+type="text"
+id="advanceDetails"
+placeholder="Détails">
+
+<button
+type="submit"
+class="btn-success">
+Ajouter
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+<!-- LISTE DES AVANCES -->
+
+<div class="card">
+
+<h2>Liste des avances</h2>
+
+<div class="search-box">
+
+<input
+type="text"
+id="search-main"
+placeholder="Rechercher..."
+onkeyup="searchAdvances()">
+
+</div>
+
+<button
+class="btn-print"
+onclick="printAdvances()">
+
+Imprimer
+
+</button>
+
+<div
+class="total-box">
+
+Total :
+<span id="total-advances">
+0.00 DZD
+</span>
+
+</div>
+
+<div class="table-container">
+
+<table id="advances-table">
+
+<thead>
+<tr>
+<th>Date</th>
+<th>Nom et prénom</th>
+<th>Montant</th>
+<th>Type</th>
+<th>Détails</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="send.js"></script>
+
+<script>
+
+// EMPLOYEE FORM
+
+document
+.getElementById("employeeForm")
+.addEventListener(
+"submit",
+async function(e){
+
+e.preventDefault();
+
+const result =
+await addEmployee(
+document.getElementById("employeeNumber").value,
+document.getElementById("employeeName").value,
+document.getElementById("employeePosition").value
+);
+
+if(result.ok){
+
+this.reset();
+
+loadEmployees();
+
+}else{
+
+alert(
+result.error ||
+"Erreur"
+);
+
+}
+
+});
+
+// ADVANCE FORM
+
+document
+.getElementById("advanceForm")
+.addEventListener(
+"submit",
+async function(e){
+
+e.preventDefault();
+
+const result =
+await addAdvance(
+
+document.getElementById("advanceDate").value,
+
+document.getElementById("advanceEmployee").value,
+
+document.getElementById("advanceAmount").value,
+
+document.getElementById("advanceType").value,
+
+document.getElementById("advanceDetails").value
+
+);
+
+if(result.ok){
+
+this.reset();
+
+loadAdvances();
+
+}else{
+
+alert(
+result.error ||
+"Erreur"
+);
+
+}
+
+});
+
+// RENDER EMPLOYEES
+
+function renderEmployees(data){
+
+const tbody =
+document.querySelector(
+"#employeesTable tbody"
+);
+
+tbody.innerHTML = "";
+
+data.forEach(emp=>{
+
+tbody.innerHTML += `
+<tr>
+<td>${emp.number}</td>
+<td>${emp.name}</td>
+<td>${emp.position}</td>
+<td>
+<button
+class="btn-danger"
+onclick="deleteEmployee(${emp.row})">
+Supprimer
+</button>
+</td>
+</tr>
+`;
+
+});
+
+}
+
+// SELECT
+
+function fillEmployeesSelect(data){
+
+const select =
+document.getElementById(
+"advanceEmployee"
+);
+
+select.innerHTML =
+'<option value="">Sélectionner un employé</option>';
+
+data.forEach(emp=>{
+
+select.innerHTML += `
+<option value="${emp.name}">
+${emp.name}
+</option>
+`;
+
+});
+
+}
+
+// RENDER ADVANCES
+
+function renderAdvances(data){
+
+const tbody =
+document.querySelector(
+"#advances-table tbody"
+);
+
+tbody.innerHTML = "";
+
+data.forEach(item=>{
+
+tbody.innerHTML += `
+<tr>
+<td>${item.date}</td>
+<td>${item.name}</td>
+<td>${item.amount}</td>
+<td>${item.type}</td>
+<td>${item.details}</td>
+<td>
+<button
+class="btn-danger"
+onclick="deleteAdvance(${item.row})">
+Supprimer
+</button>
+</td>
+</tr>
+`;
+
+});
+
+}
+</script>
+
+</body>
+</html>
+```
