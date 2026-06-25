@@ -39,8 +39,37 @@ box-shadow:0 5px 15px rgba(0,0,0,.15);
 margin-bottom:20px;
 }
 
-header h1{font-size:30px;font-weight:700;}
-header h3{margin-top:8px;font-weight:400;}
+header h1{
+font-size:30px;
+font-weight:700;
+}
+
+header h3{
+margin-top:8px;
+font-weight:400;
+}
+
+/* ================= BUTTONS ================= */
+
+.action-buttons{
+display:flex;
+gap:10px;
+margin-bottom:15px;
+}
+
+button{
+border:none;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+transition:.3s;
+}
+
+.btn-primary{background:#007bff;color:white;}
+.btn-success{background:#198754;color:white;}
+.btn-warning{background:#fd7e14;color:white;}
+.btn-danger{background:#dc3545;color:white;}
 
 /* ================= LAYOUT ================= */
 
@@ -95,29 +124,13 @@ width:100%;
 padding:10px;
 border:1px solid #d0d0d0;
 border-radius:8px;
-font-size:14px;
 outline:none;
+font-size:14px;
 }
 
 input:focus,select:focus{
 border-color:#0099ff;
 }
-
-/* ================= BUTTONS ================= */
-
-button{
-border:none;
-padding:10px 16px;
-border-radius:8px;
-cursor:pointer;
-font-weight:600;
-transition:.3s;
-}
-
-.btn-primary{background:#007bff;color:white;}
-.btn-success{background:#198754;color:white;}
-.btn-warning{background:#fd7e14;color:white;}
-.btn-danger{background:#dc3545;color:white;}
 
 /* ================= TABLE ================= */
 
@@ -144,6 +157,8 @@ tbody tr:nth-child(even){
 background:#f8fbff;
 }
 
+/* ================= TOTAL ================= */
+
 .total-box{
 margin-top:15px;
 font-size:18px;
@@ -151,37 +166,10 @@ font-weight:700;
 color:#198754;
 }
 
-/* ================= ACTION BUTTONS ================= */
-
-.action-buttons{
-display:flex;
-gap:10px;
-margin-bottom:15px;
-}
-
 /* ================= HIDDEN ================= */
 
 .hidden{
 display:none;
-}
-
-/* ================= PRINT ================= */
-
-#print-area{
-display:none;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:1000px){
-.container{
-flex-direction:column;
-}
-.left-panel{
-width:100%;
-position:relative;
-top:auto;
-}
 }
 
 </style>
@@ -197,7 +185,7 @@ top:auto;
 
 </header>
 
-<!-- ================= CONTROLS ================= -->
+<!-- ================= BUTTONS ================= -->
 
 <div class="action-buttons">
 
@@ -213,9 +201,9 @@ Ajouter un employé
 
 <div class="container">
 
-<!-- ================= LEFT PANEL ================= -->
+<!-- ================= EMPLOYE LIST ================= -->
 
-<div class="left-panel hidden" id="employeeListPanel">
+<div class="left-panel hidden" id="employeesPanel">
 
 <div class="card">
 
@@ -232,9 +220,7 @@ Ajouter un employé
 </tr>
 </thead>
 
-<tbody>
-<!-- employés -->
-</tbody>
+<tbody></tbody>
 
 </table>
 
@@ -271,7 +257,8 @@ Ajouter l'employé
 
 </div>
 
-<!-- ADVANCE FORM (COMPLET ORIGINAL) -->
+<!-- ================= ADVANCE FORM (ORIGINAL FULL) ================= -->
+
 <div class="card">
 
 <h2>Ajouter une avance</h2>
@@ -331,7 +318,8 @@ Ajouter l'avance
 
 </div>
 
-<!-- TEMPORAIRE TABLE -->
+<!-- ================= TEMP TABLE ================= -->
+
 <div class="card">
 
 <h2>Liste Temporaire</h2>
@@ -360,7 +348,8 @@ Total : <span id="temp-total">0.00</span> DZD
 
 </div>
 
-<!-- MAIN TABLE -->
+<!-- ================= MAIN TABLE ================= -->
+
 <div class="card">
 
 <h2>Liste des avances</h2>
@@ -414,35 +403,29 @@ Total général : <span id="main-total">0.00</span> DZD
 
 <script>
 
-// ================= TOGGLE =================
+// ================= TOGGLES =================
 
 function toggleEmployees(){
-
-  const panel = document.getElementById("employeeListPanel");
-  panel.classList.toggle("hidden");
-
+document.getElementById("employeesPanel").classList.toggle("hidden");
 }
 
 function toggleAddEmployee(){
-
-  const form = document.getElementById("addEmployeeCard");
-  form.classList.toggle("hidden");
-
+document.getElementById("addEmployeeCard").classList.toggle("hidden");
 }
 
 // ================= EMPLOYEE FORM =================
 
 document.getElementById("employee-form").addEventListener("submit", async function(e){
 
-  e.preventDefault();
+e.preventDefault();
 
-  await addEmployee(
-    document.getElementById("employeeNumber").value,
-    document.getElementById("employeeName").value,
-    document.getElementById("employeePosition").value
-  );
+await addEmployee(
+document.getElementById("employeeNumber").value,
+document.getElementById("employeeName").value,
+document.getElementById("employeePosition").value
+);
 
-  this.reset();
+this.reset();
 
 });
 
