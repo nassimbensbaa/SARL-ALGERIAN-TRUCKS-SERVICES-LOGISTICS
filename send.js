@@ -77,6 +77,7 @@ async function loadMainAdvances() {
     result.advances || [];
 
   renderMainTable();
+  updateMainTotal();
 
 }
 
@@ -105,6 +106,47 @@ async function addEmployee(
 
 }
 
+async function editEmployee(row) {
+
+  const employee =
+    employees.find(
+      e => Number(e.row) === Number(row)
+    );
+
+  if (!employee) return;
+
+  const name =
+    prompt(
+      "Nom et prénom",
+      employee.name
+    );
+
+  if (name === null) return;
+
+  const position =
+    prompt(
+      "Poste",
+      employee.position
+    );
+
+  if (position === null) return;
+
+  const result =
+    await api(
+      "editEmployee",
+      {
+        row,
+        name,
+        position
+      }
+    );
+
+  if (result.ok) {
+    loadEmployees();
+  }
+
+}
+
 async function deleteEmployee(row) {
 
   const pwd =
@@ -117,10 +159,11 @@ async function deleteEmployee(row) {
     return;
   }
 
-  const result = await api(
-    "deleteEmployee",
-    { row }
-  );
+  const result =
+    await api(
+      "deleteEmployee",
+      { row }
+    );
 
   if (result.ok) {
     loadEmployees();
@@ -158,9 +201,7 @@ async function addTempAdvance(
 
 }
 
-async function deleteTempAdvance(
-  row
-) {
+async function deleteTempAdvance(row) {
 
   const pwd =
     prompt(
@@ -208,11 +249,13 @@ async function transferToMain() {
       ".temp-check:checked"
     )
     .forEach(c => {
+
       rows.push(
         Number(
           c.dataset.row
         )
       );
+
     });
 
   if (rows.length === 0) {
@@ -240,7 +283,57 @@ async function transferToMain() {
 }
 
 // =========================
-// RENDER
+// EMPLOYEE SELECTS
+// =========================
+
+function fillEmployeesSelect() {
+
+  const select =
+    document.getElementById(
+      "advanceEmployee"
+    );
+
+  if (select) {
+
+    select.innerHTML =
+      '<option value="">Sélectionner un employé</option>';
+
+    employees.forEach(emp => {
+
+      select.innerHTML += `
+      <option value="${emp.name}">
+      ${emp.name}
+      </option>`;
+
+    });
+
+  }
+
+  const filter =
+    document.getElementById(
+      "employeeFilter"
+    );
+
+  if (filter) {
+
+    filter.innerHTML =
+      '<option value="">Tous les employés</option>';
+
+    employees.forEach(emp => {
+
+      filter.innerHTML += `
+      <option value="${emp.name}">
+      ${emp.name}
+      </option>`;
+
+    });
+
+  }
+
+}
+
+// =========================
+// RENDER EMPLOYEES
 // =========================
 
 function renderEmployees() {
@@ -258,9 +351,29 @@ function renderEmployees() {
 
     tbody.innerHTML += `
       <tr>
+
         <td>${emp.number}</td>
         <td>${emp.name}</td>
         <td>${emp.position}</td>
+
+        <td>
+
+          <button
+          onclick="editEmployee(${emp.row})">
+
+          Modifier
+
+          </button>
+
+          <button
+          onclick="deleteEmployee(${emp.row})">
+
+          Supprimer
+
+          </button>
+
+        </td>
+
       </tr>
     `;
 
@@ -268,31 +381,9 @@ function renderEmployees() {
 
 }
 
-function fillEmployeesSelect() {
-
-  const select =
-    document.querySelector(
-      "#advanceEmployee"
-    );
-
-  if (!select) return;
-
-  select.innerHTML =
-    `<option value="">
-      Sélectionner un employé
-    </option>`;
-
-  employees.forEach(emp => {
-
-    select.innerHTML += `
-      <option value="${emp.name}">
-        ${emp.name}
-      </option>
-    `;
-
-  });
-
-}
+// =========================
+// TEMP TABLE
+// =========================
 
 function renderTempTable() {
 
@@ -316,12 +407,12 @@ function renderTempTable() {
 
     tbody.innerHTML += `
       <tr>
+
         <td>
           <input
-            type="checkbox"
-            class="temp-check"
-            data-row="${item.row}"
-          >
+          type="checkbox"
+          class="temp-check"
+          data-row="${item.row}">
         </td>
 
         <td>${item.date}</td>
@@ -331,11 +422,16 @@ function renderTempTable() {
         <td>${item.details}</td>
 
         <td>
+
           <button
-            onclick="deleteTempAdvance(${item.row})">
-            Supprimer
+          onclick="deleteTempAdvance(${item.row})">
+
+          Supprimer
+
           </button>
+
         </td>
+
       </tr>
     `;
 
@@ -353,6 +449,10 @@ function renderTempTable() {
 
 }
 
+// =========================
+// MAIN TABLE
+// =========================
+
 function renderMainTable() {
 
   const tbody =
@@ -368,11 +468,13 @@ function renderMainTable() {
 
     tbody.innerHTML += `
       <tr>
+
         <td>${item.date}</td>
         <td>${item.name}</td>
         <td>${item.amount}</td>
         <td>${item.type}</td>
         <td>${item.details}</td>
+
       </tr>
     `;
 
@@ -381,18 +483,51 @@ function renderMainTable() {
 }
 
 // =========================
-// SEARCH
+// TOTAL
 // =========================
 
-function searchMain() {
+function updateMainTotal() {
 
-  const value =
-    document
-      .getElementById(
-        "search-main"
-      )
-      .value
-      .toLowerCase();
+  let total = 0;
+
+  mainAdvances.forEach(item => {
+
+    total +=
+      Number(
+        item.amount || 0
+      );
+
+  });
+
+  const el =
+    document.getElementById(
+      "main-total"
+    );
+
+  if (el) {
+
+    el.textContent =
+      total.toFixed(2);
+
+  }
+
+}
+
+// =========================
+// FILTERS
+// =========================
+
+function filterMainTable() {
+
+  const employee =
+    document.getElementById(
+      "employeeFilter"
+    )?.value || "";
+
+  const type =
+    document.getElementById(
+      "typeFilter"
+    )?.value || "";
 
   document
     .querySelectorAll(
@@ -400,12 +535,24 @@ function searchMain() {
     )
     .forEach(row => {
 
+      const employeeCell =
+        row.cells[1]?.textContent || "";
+
+      const typeCell =
+        row.cells[3]?.textContent || "";
+
+      const show =
+
+        (!employee ||
+         employeeCell === employee)
+
+        &&
+
+        (!type ||
+         typeCell === type);
+
       row.style.display =
-        row.textContent
-          .toLowerCase()
-          .includes(value)
-          ? ""
-          : "none";
+        show ? "" : "none";
 
     });
 
@@ -417,5 +564,41 @@ function searchMain() {
 
 document.addEventListener(
   "DOMContentLoaded",
-  loadAll
+  () => {
+
+    loadAll();
+
+    const dateInput =
+      document.getElementById(
+        "advanceDate"
+      );
+
+    if (dateInput) {
+
+      dateInput.value =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+    }
+
+    document
+      .getElementById(
+        "employeeFilter"
+      )
+      ?.addEventListener(
+        "change",
+        filterMainTable
+      );
+
+    document
+      .getElementById(
+        "typeFilter"
+      )
+      ?.addEventListener(
+        "change",
+        filterMainTable
+      );
+
+  }
 );
