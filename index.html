@@ -12,7 +12,7 @@
 
 <style>
 
-/* ================= RESET ================= */
+/* ================= GLOBAL ================= */
 
 *{
 margin:0;
@@ -59,11 +59,11 @@ font-weight:600;
 transition:.3s;
 }
 
-.btn-primary{background:#007bff;color:white;}
-.btn-success{background:#198754;color:white;}
-.btn-warning{background:#fd7e14;color:white;}
-.btn-danger{background:#dc3545;color:white;}
-.btn-print{background:#6c757d;color:white;}
+.btn-primary{background:#007bff;color:#fff;}
+.btn-success{background:#198754;color:#fff;}
+.btn-warning{background:#fd7e14;color:#fff;}
+.btn-danger{background:#dc3545;color:#fff;}
+.btn-print{background:#6c757d;color:#fff;}
 
 /* ================= LAYOUT ================= */
 
@@ -90,7 +90,7 @@ flex-direction:column;
 gap:20px;
 }
 
-/* ================= CARDS ================= */
+/* ================= CARD ================= */
 
 .card{
 background:#fff;
@@ -136,7 +136,7 @@ margin-top:10px;
 
 th{
 background:#007bff;
-color:white;
+color:#fff;
 padding:10px;
 font-size:14px;
 }
@@ -238,18 +238,11 @@ Ajouter un employé
 
 <div class="container">
 
-<!-- LEFT PANEL (TEMPORARY OR OPTIONAL VIEW) -->
-<div class="left-panel">
+<!-- ================= RIGHT PANEL ================= -->
 
-
-
-</div>
-
-<!-- RIGHT PANEL -->
 <div class="right-panel">
 
-<!-- ================= ADVANCE FORM ================= -->
-
+<!-- ADVANCE FORM (UNCHANGED) -->
 <div class="card">
 
 <h2>Ajouter une avance</h2>
@@ -267,18 +260,15 @@ Ajouter un employé
 <input type="number" id="advanceAmount" placeholder="Montant" required>
 
 <select id="advanceType" required>
-
 <option value="">Type d'avance</option>
 <option value="T.Salaire">T.Salaire</option>
 <option value="Réparation véhicule">Réparation véhicule</option>
 <option value="Prêt">Prêt</option>
 <option value="Prime alimentation">Prime alimentation</option>
 <option value="Prime mission">Prime mission</option>
-
 </select>
 
 <select id="salaryMonth" style="display:none;">
-<option value="">Choisir le mois</option>
 <option>Janvier 2026</option>
 <option>Février 2026</option>
 <option>Mars 2026</option>
@@ -299,9 +289,7 @@ Ajouter un employé
 
 <br>
 
-<button class="btn-success" type="submit">
-Ajouter l'avance
-</button>
+<button class="btn-success" type="submit">Ajouter l'avance</button>
 
 </form>
 
@@ -336,13 +324,8 @@ Total : <span id="temp-total">0.00</span> DZD
 
 <div class="action-buttons">
 
-<button class="btn-print" onclick="printReceipt()">
-Imprimer
-</button>
-
-<button class="btn-warning" onclick="transferToMain()">
-Transférer
-</button>
+<button class="btn-print" onclick="printReceipt()">Imprimer</button>
+<button class="btn-warning" onclick="transferToMain()">Transférer</button>
 
 </div>
 
@@ -381,7 +364,7 @@ Total général : <span id="main-total">0.00</span> DZD
 
 <!-- ================= MODALS ================= -->
 
-<!-- EMPLOYEES MODAL -->
+<!-- EMPLOYEES -->
 <div class="modal-overlay" id="employeesModal">
 
 <div class="modal">
@@ -410,7 +393,7 @@ Total général : <span id="main-total">0.00</span> DZD
 
 </div>
 
-<!-- ADD EMPLOYEE MODAL -->
+<!-- ADD EMPLOYEE -->
 <div class="modal-overlay" id="addEmployeeModal">
 
 <div class="modal">
@@ -424,17 +407,15 @@ Total général : <span id="main-total">0.00</span> DZD
 
 <div class="form-grid">
 
-<input type="text" id="employeeNumber" placeholder="N°" required>
-<input type="text" id="employeeName" placeholder="Nom et prénom" required>
-<input type="text" id="employeePosition" placeholder="Poste" required>
+<input type="text" id="employeeNumber" required placeholder="N°">
+<input type="text" id="employeeName" required placeholder="Nom">
+<input type="text" id="employeePosition" required placeholder="Poste">
 
 </div>
 
 <br>
 
-<button class="btn-primary" type="submit">
-Ajouter l'employé
-</button>
+<button class="btn-primary" type="submit">Ajouter</button>
 
 </form>
 
@@ -448,7 +429,7 @@ Ajouter l'employé
 
 <script>
 
-/* ================= MODAL CONTROL ================= */
+// ================= MODALS =================
 
 function openModal(id){
 document.getElementById(id).style.display = "flex";
@@ -458,7 +439,7 @@ function closeModal(id){
 document.getElementById(id).style.display = "none";
 }
 
-/* ================= EMPLOYEE FORM ================= */
+// ================= EMPLOYEE FORM =================
 
 document.getElementById("employee-form").addEventListener("submit", async function(e){
 
@@ -471,7 +452,6 @@ document.getElementById("employeePosition").value
 );
 
 this.reset();
-
 closeModal('addEmployeeModal');
 
 });
