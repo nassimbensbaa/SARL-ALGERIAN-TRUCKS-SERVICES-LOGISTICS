@@ -2,85 +2,120 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Gestion des Avances ATSL</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,sans-serif;
+font-family:'Poppins',sans-serif;
 }
 
 body{
-background:#f4f7fb;
+background:#eaf4ff;
+color:#333;
 padding:20px;
 }
 
-.container{
-max-width:1400px;
-margin:auto;
-}
-
 header{
-background:#0d6efd;
-color:white;
-padding:15px;
-border-radius:10px;
+background:linear-gradient(135deg,#0066cc,#0099ff);
+color:#fff;
+padding:25px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,.15);
 margin-bottom:20px;
 }
 
 header h1{
-font-size:28px;
+font-size:30px;
+font-weight:700;
 }
 
-header p{
-margin-top:5px;
+header h3{
+margin-top:8px;
+font-weight:400;
+}
+
+.container{
+display:flex;
+gap:20px;
+align-items:flex-start;
+}
+
+.left-panel{
+width:320px;
+background:#fff;
+border-radius:12px;
+padding:15px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+position:sticky;
+top:20px;
+}
+
+.right-panel{
+flex:1;
+display:flex;
+flex-direction:column;
+gap:20px;
 }
 
 .card{
-background:white;
-padding:15px;
-border-radius:10px;
-margin-bottom:20px;
-box-shadow:0 2px 8px rgba(0,0,0,.08);
+background:#fff;
+border-radius:12px;
+padding:20px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
 }
 
-h2{
+.card h2{
+color:#0066cc;
 margin-bottom:15px;
-color:#0d6efd;
+font-size:22px;
 }
 
 .form-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:10px;
+gap:12px;
 }
 
 input,
 select{
-padding:10px;
-border:1px solid #ccc;
-border-radius:6px;
 width:100%;
+padding:10px;
+border:1px solid #d0d0d0;
+border-radius:8px;
+font-size:14px;
+outline:none;
+}
+
+input:focus,
+select:focus{
+border-color:#0099ff;
 }
 
 button{
-padding:10px 15px;
 border:none;
-border-radius:6px;
+padding:10px 16px;
+border-radius:8px;
 cursor:pointer;
+font-weight:600;
+transition:.3s;
 }
 
 .btn-primary{
-background:#0d6efd;
+background:#007bff;
 color:white;
 }
 
-.btn-danger{
-background:#dc3545;
-color:white;
+.btn-primary:hover{
+background:#0062cc;
 }
 
 .btn-success{
@@ -88,13 +123,35 @@ background:#198754;
 color:white;
 }
 
+.btn-success:hover{
+background:#157347;
+}
+
+.btn-danger{
+background:#dc3545;
+color:white;
+}
+
+.btn-danger:hover{
+background:#bb2d3b;
+}
+
+.btn-warning{
+background:#fd7e14;
+color:white;
+}
+
+.btn-warning:hover{
+background:#dc6502;
+}
+
 .btn-print{
 background:#6c757d;
 color:white;
 }
 
-.table-container{
-overflow:auto;
+.btn-print:hover{
+background:#565e64;
 }
 
 table{
@@ -104,61 +161,133 @@ margin-top:10px;
 }
 
 th{
-background:#0d6efd;
+background:#007bff;
 color:white;
 padding:10px;
+font-size:14px;
 }
 
 td{
 padding:10px;
 border:1px solid #ddd;
+font-size:14px;
+}
+
+tbody tr:nth-child(even){
+background:#f8fbff;
 }
 
 .search-box{
 margin-bottom:15px;
 }
 
+.search-box input{
+width:100%;
+}
+
 .total-box{
-font-size:20px;
-font-weight:bold;
+margin-top:15px;
+font-size:18px;
+font-weight:700;
 color:#198754;
-margin-top:10px;
+}
+
+.action-buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:15px;
+}
+
+#print-area{
+display:none;
+}
+
+@media(max-width:1000px){
+
+.container{
+flex-direction:column;
+}
+
+.left-panel{
+width:100%;
+position:relative;
+top:auto;
+}
+
 }
 
 @media print{
-
-button,
-.search-box,
-form{
-display:none;
-}
 
 body{
 background:white;
 }
 
+header,
+button,
+.search-box{
+display:none;
+}
+
 .card{
 box-shadow:none;
+border:none;
 }
+
+#print-area{
+display:block;
 }
+
+}
+
 </style>
 </head>
+```html id="gj8s2n"
 <body>
+
+<header>
+<h1>Sarl Algerian Trucks Services and Logistics</h1>
+<h3>Directeur financier : BENSBAA Nassim</h3>
+</header>
 
 <div class="container">
 
-<header>
-<h1>Gestion des Avances ATSL</h1>
-<p>Directeur Financier : BENSBAA Nassim</p>
-</header>
-
 <!-- EMPLOYEES -->
+<div class="left-panel">
 
 <div class="card">
 
 <h2>Liste des employés</h2>
 
-<form id="employeeForm">
+<table id="employees-table">
+
+<thead>
+<tr>
+<th>N°</th>
+<th>Nom</th>
+<th>Poste</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="right-panel">
+
+<!-- ADD EMPLOYEE -->
+
+<div class="card">
+
+<h2>Ajouter un employé</h2>
+
+<form id="employee-form">
 
 <div class="form-grid">
 
@@ -180,44 +309,29 @@ id="employeePosition"
 placeholder="Poste"
 required>
 
+</div>
+
+<br>
+
 <button
 type="submit"
 class="btn-primary">
-Ajouter
-</button>
 
-</div>
+Ajouter l'employé
+
+</button>
 
 </form>
 
-<div class="table-container">
-
-<table id="employeesTable">
-
-<thead>
-<tr>
-<th>N°</th>
-<th>Nom et prénom</th>
-<th>Poste</th>
-<th>Actions</th>
-</tr>
-</thead>
-
-<tbody></tbody>
-
-</table>
-
 </div>
 
-</div>
-
-<!-- ADVANCES -->
+<!-- ADD ADVANCE -->
 
 <div class="card">
 
 <h2>Ajouter une avance</h2>
 
-<form id="advanceForm">
+<form id="advance-form">
 
 <div class="form-grid">
 
@@ -229,9 +343,11 @@ required>
 <select
 id="advanceEmployee"
 required>
+
 <option value="">
 Sélectionner un employé
 </option>
+
 </select>
 
 <input
@@ -245,27 +361,27 @@ id="advanceType"
 required>
 
 <option value="">
-Type
+Type d'avance
 </option>
 
 <option value="T.Salaire">
 T.Salaire
 </option>
 
-<option value="Réparation">
-Réparation
+<option value="Réparation véhicule">
+Réparation véhicule
 </option>
 
 <option value="Prêt">
 Prêt
 </option>
 
-<option value="Alimentation">
-Alimentation
+<option value="Prime alimentation">
+Prime alimentation
 </option>
 
-<option value="Mission">
-Mission
+<option value="Prime mission">
+Prime mission
 </option>
 
 </select>
@@ -275,19 +391,85 @@ type="text"
 id="advanceDetails"
 placeholder="Détails">
 
+</div>
+
+<br>
+
 <button
 type="submit"
 class="btn-success">
-Ajouter
-</button>
 
-</div>
+Ajouter l'avance
+
+</button>
 
 </form>
 
 </div>
 
-<!-- LISTE DES AVANCES -->
+<!-- TEMP ADVANCES -->
+
+<div class="card">
+
+<h2>Liste Temporaire</h2>
+
+<table id="temp-table">
+
+<thead>
+
+<tr>
+
+<th>Choisir</th>
+<th>Date</th>
+<th>Employé</th>
+<th>Montant</th>
+<th>Type</th>
+<th>Détails</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+<div class="total-box">
+
+Total :
+<span id="temp-total">
+0.00
+</span>
+DZD
+
+</div>
+
+<div class="action-buttons">
+
+<button
+class="btn-print"
+onclick="printReceipt()">
+
+Imprimer
+
+</button>
+
+<button
+class="btn-warning"
+onclick="transferToMain()">
+
+Transférer vers liste principale
+
+</button>
+
+</div>
+
+</div>
+
+<!-- MAIN ADVANCES -->
 
 <div class="card">
 
@@ -298,223 +480,356 @@ Ajouter
 <input
 type="text"
 id="search-main"
-placeholder="Rechercher..."
-onkeyup="searchAdvances()">
+placeholder="Recherche par nom ou détails">
 
 </div>
 
-<button
-class="btn-print"
-onclick="printAdvances()">
-
-Imprimer
-
-</button>
-
-<div
-class="total-box">
-
-Total :
-<span id="total-advances">
-0.00 DZD
-</span>
-
-</div>
-
-<div class="table-container">
-
-<table id="advances-table">
+<table id="main-table">
 
 <thead>
+
 <tr>
+
 <th>Date</th>
-<th>Nom et prénom</th>
+<th>Employé</th>
 <th>Montant</th>
 <th>Type</th>
 <th>Détails</th>
-<th>Actions</th>
+
 </tr>
+
 </thead>
 
-<tbody></tbody>
+<tbody>
+
+</tbody>
 
 </table>
 
-</div>
+<div class="total-box">
+
+Total général :
+<span id="main-total">
+0.00
+</span>
+DZD
 
 </div>
 
 </div>
 
+</div>
+
+</div>
+
+<div id="print-area"></div>
+```html
 <script src="send.js"></script>
 
 <script>
 
-// EMPLOYEE FORM
+// =========================
+// AJOUT EMPLOYÉ
+// =========================
 
 document
-.getElementById("employeeForm")
+.getElementById("employee-form")
 .addEventListener(
 "submit",
 async function(e){
 
 e.preventDefault();
 
-const result =
 await addEmployee(
-document.getElementById("employeeNumber").value,
-document.getElementById("employeeName").value,
-document.getElementById("employeePosition").value
-);
 
-if(result.ok){
+document.getElementById(
+"employeeNumber"
+).value,
+
+document.getElementById(
+"employeeName"
+).value,
+
+document.getElementById(
+"employeePosition"
+).value
+
+);
 
 this.reset();
 
-loadEmployees();
-
-}else{
-
-alert(
-result.error ||
-"Erreur"
+}
 );
 
-}
-
-});
-
-// ADVANCE FORM
+// =========================
+// AJOUT AVANCE
+// =========================
 
 document
-.getElementById("advanceForm")
+.getElementById("advance-form")
 .addEventListener(
 "submit",
 async function(e){
 
 e.preventDefault();
 
-const result =
-await addAdvance(
+await addTempAdvance(
 
-document.getElementById("advanceDate").value,
+document.getElementById(
+"advanceDate"
+).value,
 
-document.getElementById("advanceEmployee").value,
-
-document.getElementById("advanceAmount").value,
-
-document.getElementById("advanceType").value,
-
-document.getElementById("advanceDetails").value
-
-);
-
-if(result.ok){
-
-this.reset();
-
-loadAdvances();
-
-}else{
-
-alert(
-result.error ||
-"Erreur"
-);
-
-}
-
-});
-
-// RENDER EMPLOYEES
-
-function renderEmployees(data){
-
-const tbody =
-document.querySelector(
-"#employeesTable tbody"
-);
-
-tbody.innerHTML = "";
-
-data.forEach(emp=>{
-
-tbody.innerHTML += `
-<tr>
-<td>${emp.number}</td>
-<td>${emp.name}</td>
-<td>${emp.position}</td>
-<td>
-<button
-class="btn-danger"
-onclick="deleteEmployee(${emp.row})">
-Supprimer
-</button>
-</td>
-</tr>
-`;
-
-});
-
-}
-
-// SELECT
-
-function fillEmployeesSelect(data){
-
-const select =
 document.getElementById(
 "advanceEmployee"
+).value,
+
+document.getElementById(
+"advanceAmount"
+).value,
+
+document.getElementById(
+"advanceType"
+).value,
+
+document.getElementById(
+"advanceDetails"
+).value
+
 );
 
-select.innerHTML =
-'<option value="">Sélectionner un employé</option>';
+this.reset();
 
-data.forEach(emp=>{
+}
+);
 
-select.innerHTML += `
-<option value="${emp.name}">
-${emp.name}
-</option>
-`;
+// =========================
+// RECHERCHE
+// =========================
+
+document
+.getElementById("search-main")
+.addEventListener(
+"keyup",
+searchMain
+);
+
+// =========================
+// TOTAL PRINCIPAL
+// =========================
+
+function updateMainTotal(){
+
+let total = 0;
+
+mainAdvances.forEach(item => {
+
+total += Number(
+item.amount || 0
+);
 
 });
 
-}
-
-// RENDER ADVANCES
-
-function renderAdvances(data){
-
-const tbody =
-document.querySelector(
-"#advances-table tbody"
+const el =
+document.getElementById(
+"main-total"
 );
 
-tbody.innerHTML = "";
+if(el){
 
-data.forEach(item=>{
+el.textContent =
+total.toLocaleString(
+"fr-FR",
+{
+minimumFractionDigits:2
+}
+);
 
-tbody.innerHTML += `
+}
+
+}
+
+// =========================
+// SURCHARGE TABLEAU
+// =========================
+
+const oldRenderMain =
+renderMainTable;
+
+renderMainTable =
+function(){
+
+oldRenderMain();
+
+updateMainTotal();
+
+};
+
+// =========================
+// IMPRESSION
+// =========================
+
+function printReceipt(){
+
+const selected =
+document.querySelectorAll(
+".temp-check:checked"
+);
+
+if(
+selected.length === 0
+){
+
+alert(
+"Sélectionnez au moins une ligne"
+);
+
+return;
+
+}
+
+let html = `
+
+<div style="
+font-family:Arial;
+padding:20px;
+">
+
+<h1 style="
+text-align:center;
+">
+Sarl Algerian Trucks Services and Logistics
+</h1>
+
+<h3 style="
+text-align:center;
+">
+Directeur financier :
+BENSBAA Nassim
+</h3>
+
+<hr>
+
+<h2 style="
+text-align:center;
+">
+REÇU DE CAISSE
+</h2>
+
+<table
+border="1"
+width="100%"
+style="
+border-collapse:collapse;
+">
+
 <tr>
+
+<th>Date</th>
+<th>Employé</th>
+<th>Montant</th>
+<th>Type</th>
+<th>Détails</th>
+
+</tr>
+
+`;
+
+let total = 0;
+
+selected.forEach(c=>{
+
+const row =
+Number(
+c.dataset.row
+);
+
+const item =
+tempAdvances.find(
+x => x.row === row
+);
+
+if(!item) return;
+
+total +=
+Number(
+item.amount || 0
+);
+
+html += `
+
+<tr>
+
 <td>${item.date}</td>
 <td>${item.name}</td>
 <td>${item.amount}</td>
 <td>${item.type}</td>
 <td>${item.details}</td>
-<td>
-<button
-class="btn-danger"
-onclick="deleteAdvance(${item.row})">
-Supprimer
-</button>
-</td>
+
 </tr>
+
 `;
 
 });
 
+html += `
+
+</table>
+
+<h2 style="
+margin-top:20px;
+">
+
+TOTAL :
+${total.toLocaleString(
+"fr-FR",
+{
+minimumFractionDigits:2
 }
+)} DZD
+
+</h2>
+
+</div>
+
+`;
+
+const printArea =
+document.getElementById(
+"print-area"
+);
+
+printArea.innerHTML =
+html;
+
+const win =
+window.open(
+"",
+"_blank"
+);
+
+win.document.write(
+html
+);
+
+win.document.close();
+
+win.print();
+
+}
+
+// =========================
+// AUTO LOAD
+// =========================
+
+document.addEventListener(
+"DOMContentLoaded",
+() => {
+
+loadAll();
+
+}
+);
+
 </script>
 
 </body>
