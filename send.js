@@ -602,3 +602,5 @@ document.addEventListener(
 
   }
 );
+
+// NOTE: rename this file to send.js before use.
